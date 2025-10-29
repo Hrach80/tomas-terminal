@@ -1,0 +1,131 @@
+/* src/styles/AdminDashboard.css */
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container h2 {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Կոճակների ոճեր */
+.add-product-btn {
+    padding: 12px 25px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.add-product-btn:hover {
+    background-color: #388e3c;
+    /* Մուգ կանաչ */
+}
+
+/* Աղյուսակի ոճեր */
+.table-responsive {
+    overflow-x: auto;
+    /* Աղյուսակի հորիզոնական scroll փոքր էկրաններին */
+    margin-bottom: 20px;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+    /* Աղյուսակի նվազագույն լայնությունը */
+}
+
+.product-table th,
+.product-table td {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    font-size: 0.9em;
+}
+
+.product-table th {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.product-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.product-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Գործողությունների կոճակներ */
+.action-btn {
+    padding: 8px 12px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 0.85em;
+    transition: opacity 0.3s;
+}
+
+.action-btn:hover {
+    opacity: 0.8;
+}
+
+.edit-btn {
+    background-color: var(--secondary-color);
+}
+
+.delete-btn {
+    background-color: var(--danger-color);
+}
+
+/* Անվտանգության նշում */
+.security-note {
+    background-color: #fff3cd;
+    border: 1px solid #ffe0a3;
+    color: #856404;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 30px;
+    font-weight: 500;
+}
+
+/* Ռեսպոնսիվություն (Միայն CSS-ի միջոցով) */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 10px;
+    }
+
+    /* Թաքցնում ենք քիչ կարևոր դաշտերը փոքր էկրաններին */
+    .hide-on-mobile {
+        display: none;
+    }
+
+    .product-table th,
+    .product-table td {
+        padding: 8px 10px;
+        font-size: 0.8em;
+    }
+
+    /* Գործողությունների կոճակները բլոկային ենք դարձնում */
+    .product-table td button {
+        display: block;
+        width: 100%;
+        margin-top: 5px;
+    }
+}

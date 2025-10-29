@@ -1,0 +1,70 @@
+/* src/styles/global.css */
+
+/* Գլոբալ Ռեսետ և Բազային Ոճեր */
+:root {
+    --primary-color: #4CAF50;
+    /* Կանաչ */
+    --secondary-color: #2196F3;
+    /* Կապույտ */
+    --danger-color: #f44336;
+    /* Կարմիր */
+    --text-color: #333;
+    --bg-color: #fff;
+    --light-bg: #f8f8f8;
+    --border-color: #ddd;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: var(--text-color);
+    background-color: var(--light-bg);
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.admin-header {
+    background-color: var(--bg-color);
+    padding: 20px 40px;
+    border-bottom: 2px solid var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.admin-header h1 {
+    font-size: 1.8em;
+    color: var(--primary-color);
+}
+
+.admin-main {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.admin-footer {
+    background-color: var(--bg-color);
+    padding: 10px 20px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.8em;
+    color: #777;
+}
+
+/* Ռեսպոնսիվություն՝ Փոքր էկրանների համար */
+@media (max-width: 600px) {
+    .admin-header {
+        padding: 15px 20px;
+    }
+
+    .admin-header h1 {
+        font-size: 1.4em;
+    }
+}
