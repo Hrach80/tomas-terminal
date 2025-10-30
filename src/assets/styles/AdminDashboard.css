@@ -1,131 +1,266 @@
-/* src/styles/AdminDashboard.css */
-
+/*
+ * ---------------------------------------
+ * 1. Ընդհանուր Ոճեր և Ֆոն
+ * ---------------------------------------
+ */
 .dashboard-container {
+    padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    background-color: var(--bg-color);
-    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #f7f7f7;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.dashboard-container h2 {
-    color: var(--primary-color);
-    margin-bottom: 25px;
-    border-bottom: 2px solid var(--border-color);
+h2 {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
     padding-bottom: 10px;
+    margin-bottom: 25px;
+    font-weight: 600;
 }
 
-/* Կոճակների ոճեր */
-.add-product-btn {
-    padding: 12px 25px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+h3,
+h4 {
+    color: #444;
+    margin-top: 20px;
+}
+
+/* ---------------------------------------
+ * 2. Ֆորմաների Ընդհանուր Ոճեր (Add & Edit)
+ * ---------------------------------------
+ */
+.add-form-container,
+.edit-form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
 }
 
-.add-product-btn:hover {
-    background-color: #388e3c;
-    /* Մուգ կանաչ */
+.add-form-container form,
+.edit-form-container form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
 }
 
-/* Աղյուսակի ոճեր */
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    /* Շատ կարևոր է ճիշտ չափսի համար */
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}
+
+/* ---------------------------------------
+ * 3. Կոճակների Ոճեր և Ինտերակտիվություն
+ * ---------------------------------------
+ */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s, opacity 0.3s;
+    margin-right: 10px;
+}
+
+/* Ընդհանուր Ավելացնել Կոճակը */
+.add-product-btn {
+    background-color: #28a745;
+    color: white;
+    margin-bottom: 20px;
+    display: block;
+    width: auto;
+}
+
+.add-product-btn:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+/* Ֆորմայի Գործողությունների Կոճակներ */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.form-actions button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+}
+
+.form-actions button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.form-actions button[type="button"] {
+    /* Չեղարկել կոճակը */
+    background-color: #6c757d;
+    color: white;
+}
+
+.form-actions button[type="button"]:hover {
+    background-color: #5a6268;
+}
+
+/* Կոճակները Disabled վիճակում */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ---------------------------------------
+ * 4. Աղյուսակի Ոճեր
+ * ---------------------------------------
+ */
 .table-responsive {
     overflow-x: auto;
-    /* Աղյուսակի հորիզոնական scroll փոքր էկրաններին */
-    margin-bottom: 20px;
+    /* Ապահովում է ռեսպոնսիվություն փոքր էկրանների վրա */
 }
 
 .product-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 600px;
-    /* Աղյուսակի նվազագույն լայնությունը */
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .product-table th,
 .product-table td {
     padding: 12px 15px;
-    border: 1px solid var(--border-color);
     text-align: left;
-    font-size: 0.9em;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
 }
 
 .product-table th {
-    background-color: var(--light-bg);
-    color: var(--text-color);
+    background-color: #e9ecef;
+    color: #495057;
     font-weight: 600;
 }
 
-.product-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
 .product-table tr:hover {
-    background-color: #f1f1f1;
+    background-color: #f5f5f5;
+    /* Ինտերակտիվություն: Hover ֆոն */
 }
 
-/* Գործողությունների կոճակներ */
+/* Գործողությունների Կոճակները Աղյուսակում */
 .action-btn {
-    padding: 8px 12px;
+    padding: 6px 10px;
+    font-size: 13px;
     margin-right: 5px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: white;
-    font-size: 0.85em;
-    transition: opacity 0.3s;
-}
-
-.action-btn:hover {
-    opacity: 0.8;
 }
 
 .edit-btn {
-    background-color: var(--secondary-color);
+    background-color: #ffc107;
+    color: #333;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
 }
 
 .delete-btn {
-    background-color: var(--danger-color);
+    background-color: #dc3545;
+    color: white;
 }
 
-/* Անվտանգության նշում */
-.security-note {
-    background-color: #fff3cd;
-    border: 1px solid #ffe0a3;
-    color: #856404;
-    padding: 15px;
-    border-radius: 5px;
-    margin-top: 30px;
-    font-weight: 500;
+.delete-btn:hover {
+    background-color: #c82333;
 }
 
-/* Ռեսպոնսիվություն (Միայն CSS-ի միջոցով) */
+/* Ընթացիկ նկարի ցուցադրումը խմբագրման ձևում */
+.current-image img {
+    border: 1px solid #ddd;
+    padding: 3px;
+    margin-top: 5px;
+}
+
+/* ---------------------------------------
+ * 5. Ռեսպոնսիվություն (Հեռախոսների Համար)
+ * ---------------------------------------
+ */
 @media (max-width: 768px) {
     .dashboard-container {
         padding: 10px;
     }
 
-    /* Թաքցնում ենք քիչ կարևոր դաշտերը փոքր էկրաններին */
+    /* Ֆորմաների Դաշտերը Փոքր Էկրանների Համար */
+    .add-form-container form,
+    .edit-form-container form {
+        gap: 10px;
+    }
+
+    /* Աղյուսակի Ոճեր Փոքր Էկրանների Համար */
+    .product-table th,
+    .product-table td {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    /* Թաքցնել Ոչ Կարևոր Սյունակները */
     .hide-on-mobile {
         display: none;
     }
 
-    .product-table th,
-    .product-table td {
-        padding: 8px 10px;
-        font-size: 0.8em;
+    /* Կոճակները Փոքր Էկրաններին */
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
     }
 
-    /* Գործողությունների կոճակները բլոկային ենք դարձնում */
-    .product-table td button {
-        display: block;
+    .form-actions button {
         width: 100%;
-        margin-top: 5px;
+        margin-right: 0;
+    }
+
+    /* Աղյուսակի Գործողությունների Կոճակները Stack-ով */
+    .product-table td:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .action-btn {
+        width: 100%;
+        margin-right: 0;
     }
 }

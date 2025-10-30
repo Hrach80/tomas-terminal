@@ -1,0 +1,130 @@
+/*
+ * ---------------------------------------
+ * AddProductForm-ին հատուկ ոճեր
+ * ---------------------------------------
+ */
+.add-form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    font-family: 'Arial', sans-serif;
+}
+
+.add-form-container h3 {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.add-form-container h4 {
+    color: #444;
+    margin-top: 20px;
+}
+
+.add-form-container form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.add-form-container label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #555;
+}
+
+.add-form-container input[type="text"],
+.add-form-container input[type="number"],
+.add-form-container input[type="file"],
+.add-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.add-form-container input[type="text"]:focus,
+.add-form-container input[type="number"]:focus,
+.add-form-container textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.add-form-container textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.add-form-container hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}
+
+/* Կոճակների ոճերը */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+    /* Ավելացրել եմ gap, որպեսզի չլինի մարջինի կրկնություն */
+}
+
+.form-actions button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.form-actions button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+}
+
+.form-actions button[type="submit"]:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+.form-actions button[type="button"] {
+    /* Չեղարկել կոճակը */
+    background-color: #6c757d;
+    color: white;
+}
+
+.form-actions button[type="button"]:hover {
+    background-color: #5a6268;
+}
+
+.add-form-container button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Ռեսպոնսիվություն */
+@media (max-width: 768px) {
+    .add-form-container {
+        padding: 15px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
