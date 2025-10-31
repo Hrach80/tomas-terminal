@@ -216,13 +216,13 @@ tbody tr:hover {
 
 .table-btn.delete {
     background-color: var(--danger);
-    color: #fff;
     box-shadow: 0 0 6px var(--danger);
 }
 
 .table-btn.delete:hover {
     transform: scale(1.05);
     box-shadow: 0 0 12px var(--danger);
+    color: #ff0101;
 }
 
 /* -------------------- FORM -------------------- */
@@ -234,9 +234,12 @@ tbody tr:hover {
 }
 .action-group{
     display: flex;
-    max-width: 130px;
+    max-width: 180px;
+    width: 100%;
     justify-content: space-between;
+
 }
+
 
 /* -------------------- RESPONSIVE -------------------- */
 @media (max-width: 768px) {
@@ -265,7 +268,7 @@ tbody tr:hover {
     .dashboard-header h2 {
         font-size: 1.2rem;
     }
-
+    
     .dashboard-actions button {
         flex: 1 1 100%;
     }
@@ -278,6 +281,7 @@ tbody tr:hover {
     td {
         padding: 5px 6px;
     }
+    
 
     .table-btn {
         font-size: 0.65rem;

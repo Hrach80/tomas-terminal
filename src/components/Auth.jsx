@@ -86,7 +86,7 @@ const Auth = () => {
                 <button
                     type="submit"
                     disabled={loading}
-                    style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                    style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'blue', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
                 >
                     {loading ? 'Բեռնվում է...' : (isSignUp ? 'Գրանցվել' : 'Մուտք Գործել')}
                 </button>

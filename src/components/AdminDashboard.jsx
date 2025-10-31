@@ -68,7 +68,7 @@ const AdminDashboard = () => {
     return (
         <div className="admin-dashboard">
             <header className="dashboard-header">
-                <h2>Ադմինիստրատորի Վահանակ</h2>
+                
                 <div className="dashboard-actions">
                     <button type="button" onClick={() => { setCurrentView('list'); setSelectedProduct(null); }}>
                         Ապրանքների Ցուցակ
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
                             </thead>
                             <tbody>
                                 {products.map((product) => (
-                                    <tr key={product.id}>
+                                    <tr className='td-obshi' key={product.id}>
                                         <td data-label="ID">{product.id}</td>
                                         <td data-label="Նկար">
                                             {product.image_url ? (
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
                                         </td>
                                         <td data-label="Վերնագիր (HY)">{product.title_hy}</td>
                                         <td data-label="Գին" className="price">{product.price} €</td>
-                                        <td data-label="Գործողություններ">
+                                        <td className='td-tab' data-label="Գործողություններ">
                                             <div className="action-group">
                                                 <button
                                                     type="button"
