@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { productImagesBucket } from '../supabaseClient';
-
+import "../assets/styles/AddProductForm.css"
 const AddProductForm = ({ onProductAdded, onCancel }) => {
     // ------------------ Title States (4 Լեզու) - ԱՆՓՈՓՈԽ ------------------
     const [titleHy, setTitleHy] = useState('');

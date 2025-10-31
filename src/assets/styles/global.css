@@ -1,70 +1,185 @@
 /* src/styles/global.css */
 
-/* Գլոբալ Ռեսետ և Բազային Ոճեր */
+/* 🌈 Գլոբալ փոփոխականներ (Նեոնային թեմա) */
 :root {
-    --primary-color: #4CAF50;
-    /* Կանաչ */
-    --secondary-color: #2196F3;
-    /* Կապույտ */
-    --danger-color: #f44336;
-    /* Կարմիր */
-    --text-color: #333;
-    --bg-color: #fff;
-    --light-bg: #f8f8f8;
-    --border-color: #ddd;
+    --primary-color: #00ff99;
+    /* Նեոն կանաչ */
+    --secondary-color: #00ccff;
+    /* Նեոն կապույտ */
+    --danger-color: #ff3366;
+    /* Կարմիր / ջնջման համար */
+    --bg-color: #0d0d0d;
+    /* Մուգ հիմնական ֆոն */
+    --card-bg: #1a1a1a;
+    /* Բլոկների ֆոն */
+    --border-color: rgba(0, 255, 136, 0.25);
+    --text-color: #e6ffe6;
+    /* Բաց կանաչավուն տեքստ */
+    --muted-text: #88aa88;
+    /* Թույլ գույն */
+    --shadow-neon: 0 0 15px rgba(0, 255, 136, 0.3);
 }
 
+/* 🔄 Ռեսետ և Բազային ոճեր */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+html,
 body {
-    font-family: 'Arial', sans-serif;
-    color: var(--text-color);
-    background-color: var(--light-bg);
+    height: 100%;
 }
 
+body {
+    font-family: 'Poppins', 'Arial', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* 🔹 Համընդհանուր կոնտեյներ */
 .app-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
+/* 🔹 Header */
 .admin-header {
-    background-color: var(--bg-color);
+    background: linear-gradient(90deg, #0f0f0f, #121212);
     padding: 20px 40px;
-    border-bottom: 2px solid var(--primary-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .admin-header h1 {
     font-size: 1.8em;
     color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
 }
 
+/* 🔹 Գլխավոր հատված */
 .admin-main {
     flex-grow: 1;
-    padding: 20px;
+    padding: 40px;
+    background: var(--bg-color);
 }
 
+/* 🔹 Footer */
 .admin-footer {
-    background-color: var(--bg-color);
-    padding: 10px 20px;
-    text-align: center;
+    background: #111;
     border-top: 1px solid var(--border-color);
-    font-size: 0.8em;
-    color: #777;
+    padding: 15px;
+    text-align: center;
+    color: var(--muted-text);
+    font-size: 0.9em;
 }
 
-/* Ռեսպոնսիվություն՝ Փոքր էկրանների համար */
-@media (max-width: 600px) {
+/* 🔹 Կոճակներ */
+button {
+    background: var(--primary-color);
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #00cc66;
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+    transform: scale(1.05);
+}
+
+/* 🔹 Ջնջման կոճակ */
+button.delete,
+button.danger {
+    background: var(--danger-color);
+    color: #fff;
+}
+
+button.delete:hover,
+button.danger:hover {
+    box-shadow: 0 0 12px rgba(255, 51, 102, 0.5);
+    transform: scale(1.05);
+}
+
+/* 🔹 Input / Textarea ընդհանուր ոճեր */
+input,
+textarea,
+select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 10px 14px;
+    width: 100%;
+    margin-top: 5px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-neon);
+    outline: none;
+}
+
+/* 🔹 Աղյուսակների ընդհանուր ոճավորում */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+}
+
+th,
+td {
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.15);
+    text-align: left;
+}
+
+th {
+    background: rgba(0, 255, 136, 0.1);
+    color: var(--primary-color);
+    font-weight: 600;
+    text-shadow: 0 0 6px rgba(0, 255, 136, 0.4);
+}
+
+tr:hover {
+    background: rgba(0, 255, 136, 0.05);
+}
+
+/* 🔹 Ռեսպոնսիվություն */
+@media (max-width: 768px) {
+    .admin-main {
+        padding: 20px;
+    }
+
     .admin-header {
         padding: 15px 20px;
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .admin-header h1 {
-        font-size: 1.4em;
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+
+    table {
+        font-size: 0.9em;
     }
 }

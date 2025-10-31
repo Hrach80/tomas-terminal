@@ -1,10 +1,11 @@
+// src/components/EditProductForm.jsx (ՈՒՂՂՎԱԾ)
+
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { productImagesBucket } from '../supabaseClient';
 
-const EditProductForm = ({ product, onUpdate, onCancel }) => {
-    // 1. Ստեղծել state-ներ՝ ԲՈԼՈՐ դաշտերի համար
 
+const EditProductForm = ({ product, onUpdate, onCancel }) => {
     // ------------------ Title States (4 Լեզու) ------------------
     const [titleHy, setTitleHy] = useState(product.title_hy || '');
     const [titleEn, setTitleEn] = useState(product.title_en || '');
@@ -17,11 +18,11 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
     const [descriptionRu, setDescriptionRu] = useState(product.description_ru || '');
     const [descriptionNl, setDescriptionNl] = useState(product.description_nl || '');
 
-    // ---------------- Category States (ՄԻԱՅՆ category և category_hy) ----------------
+    // ✅ Category States (Ավելացված Ru և Nl) ----------------
     const [category, setCategory] = useState(product.category || '');
     const [categoryHy, setCategoryHy] = useState(product.category_hy || '');
-
-    // category_en/ru/nl չկան
+    const [categoryRu, setCategoryRu] = useState(product.category_ru || '');
+    const [categoryNl, setCategoryNl] = useState(product.category_nl || '');
 
     // ---------------- General States ----------------
     const [price, setPrice] = useState(product.price || 0);
@@ -59,7 +60,6 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
         try {
             const newImageUrl = await uploadImage(image);
 
-            // updates օբյեկտը պարունակում է ԲՈԼՈՐ սյունակները
             const updates = {
                 // Title
                 title_hy: titleHy,
@@ -73,9 +73,11 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
                 description_ru: descriptionRu,
                 description_nl: descriptionNl,
 
-                // Category (ՄԻԱՅՆ category և category_hy)
+                // ✅ Category (Ավելացված Ru և Nl)
                 category: category,
                 category_hy: categoryHy,
+                category_ru: categoryRu,
+                category_nl: categoryNl,
 
                 price: price,
                 image_url: newImageUrl,
@@ -91,7 +93,6 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
                 throw new Error(`Տվյալների փոփոխման սխալ: ${error.message}`);
             }
 
-            // Կանչում ենք onUpdate ֆունկցիան՝ փոփոխված տվյալներով
             onUpdate(data[0]);
             onCancel();
         } catch (err) {
@@ -133,12 +134,16 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
 
                 <hr />
 
-                {/* Category Fields (ՄԻԱՅՆ category և category_hy) */}
+                {/* ✅ Category Fields (Ավելացված Ru և Nl) */}
                 <h4>Կատեգորիաներ</h4>
-                <label>Կատեգորիա (Ընդհանուր)</label>
+                <label>Կատեգորիա (Ընդհանուր/Անգլերեն)</label>
                 <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
                 <label>Կատեգորիա (Հայերեն)</label>
                 <input type="text" value={categoryHy} onChange={(e) => setCategoryHy(e.target.value)} />
+                <label>Կատեգորիա (Ռուսերեն)</label>
+                <input type="text" value={categoryRu} onChange={(e) => setCategoryRu(e.target.value)} />
+                <label>Կատեգորիա (Նիդերլանդերեն)</label>
+                <input type="text" value={categoryNl} onChange={(e) => setCategoryNl(e.target.value)} />
 
                 <hr />
 

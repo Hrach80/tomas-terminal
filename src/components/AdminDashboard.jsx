@@ -1,186 +1,159 @@
+// src/components/AdminDashboard.jsx
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
+import Login from './Login';
 import AddProductForm from './AddProductForm';
 import EditProductForm from './EditProductForm';
 import '../assets/styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
+    const [session, setSession] = useState(null);
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [isAdding, setIsAdding] = useState(false);
-    const [editingProduct, setEditingProduct] = useState(null);
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
-
-    // ----------------- ՆՈՐ ՖՈՒՆԿՑԻԱ: Դուրս գալ -----------------
-    const handleSignOut = async () => {
-        try {
-            setLoading(true); // Կոճակը անջատելու համար
-            const { error } = await supabase.auth.signOut();
-            if (error) throw error;
-            // App.jsx-ը կնկատի փոփոխությունը (session-ը կդառնա null) և կցուցադրի Auth ֆորման
-        } catch (error) {
-            console.error("Դուրս գալու սխալ:", error);
-            setError(error.message); // Ցուցադրել սխալը, եթե կա
-        } finally {
-            setLoading(false);
-        }
-    };
-    // ----------------- ՎԵՐՋ -----------------
+    const [loading, setLoading] = useState(false);
+    const [currentView, setCurrentView] = useState('list');
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     const fetchProducts = async () => {
         setLoading(true);
-        setError(null);
-        try {
-            const { data, error } = await supabase
-                .from('products')
-                .select(`
-                  id, 
-                  price, 
-                  image_url, 
-                  created_at,
-                  category,         
-                  category_hy,
-                  title_hy, title_en, title_ru, title_nl, 
-                  description_hy, description_en, description_ru, description_nl
-                `)
-                .order('created_at', { ascending: false });
+        const { data, error } = await supabase
+            .from('products')
+            .select('*')
+            .order('id', { ascending: false });
 
-            if (error) {
-                throw new Error(error.message);
-            }
-            setProducts(data);
-        } catch (err) {
-            console.error("Error fetching products:", err);
-            setError(err.message);
-        } finally {
-            setLoading(false);
+        if (error) console.error('Error fetching products:', error);
+        else setProducts(data);
+
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setSession(session);
+            if (session) fetchProducts();
+        });
+
+        const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+            setSession(session);
+            if (session) fetchProducts();
+            else setProducts([]);
+        });
+
+        return () => listener.subscription.unsubscribe();
+    }, []);
+
+    const handleLogout = async () => {
+        setLoading(true);
+        const { error } = await supabase.auth.signOut();
+        setLoading(false);
+        if (error) console.error('Logout error:', error.message);
+        else {
+            setSession(null);
+            setCurrentView('list');
         }
     };
 
-    // ----------------- ԳՈՐԾՈՂՈՒԹՅՈՒՆՆԵՐԻ ՖՈՒՆԿՑԻԱՆԵՐ -----------------
-
-    const handleProductAdded = (newProduct) => {
-        setProducts([newProduct, ...products]);
-        setIsAdding(false);
+    const handleDelete = async (id) => {
+        if (!window.confirm('Ջնջե՞լ այս ապրանքը։')) return;
+        const { error } = await supabase.from('products').delete().eq('id', id);
+        if (error) console.error(error);
+        else setProducts(products.filter((p) => p.id !== id));
     };
 
-    const handleProductUpdated = (updatedProduct) => {
-        setProducts(
-            products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-        );
-        setEditingProduct(null);
+    const handleEdit = (product) => {
+        setSelectedProduct(product);
+        setCurrentView('edit');
     };
 
-    const handleDelete = async (productId) => {
-        if (window.confirm('Համոզվա՞ծ եք, որ ցանկանում եք ջնջել այս ապրանքը։')) {
-            try {
-                const { error } = await supabase
-                    .from('products')
-                    .delete()
-                    .eq('id', productId);
-
-                if (error) {
-                    throw new Error(error.message);
-                }
-                setProducts(products.filter((p) => p.id !== productId));
-            } catch (err) {
-                console.error("Error deleting product:", err);
-                setError(`Ջնջման սխալ: ${err.message}`);
-            }
-        }
-    };
-
-    // ----------------- ՑՈՒՑԱԴՐՈՒՄ -----------------
-
-    if (loading) return <p>Բեռնվում է...</p>;
-    if (error && !products.length) return <p style={{ color: 'red' }}>Սխալ բեռնման ժամանակ: {error}</p>;
+    if (!session) return <Login />;
 
     return (
-        <div className="dashboard-container">
-            {/* Ավելացրել ենք Դուրս Գալու Կոճակը Ձեր Դաշտի Վերևում */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div className="admin-dashboard">
+            <header className="dashboard-header">
                 <h2>Ադմինիստրատորի Վահանակ</h2>
-                <button
-                    onClick={handleSignOut}
-                    disabled={loading}
-                    style={{ padding: '8px 15px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-                >
-                    Դուրս Գալ
-                </button>
-            </div>
+                <div className="dashboard-actions">
+                    <button onClick={() => { setCurrentView('list'); setSelectedProduct(null); }}>Ապրանքների Ցուցակ</button>
+                    <button onClick={() => setCurrentView('add')}>+ Ավելացնել Ապրանք</button>
+                    <button className="logout-btn" onClick={handleLogout} disabled={loading}>
+                        {loading ? 'Ելք...' : 'Ելք'}
+                    </button>
+                </div>
+            </header>
 
-
-            {/* 1. Ավելացման Ֆորմա */}
-            {isAdding ? (
+            {currentView === 'add' && (
                 <AddProductForm
-                    onProductAdded={handleProductAdded}
-                    onCancel={() => setIsAdding(false)}
+                    onProductAdded={() => { setCurrentView('list'); fetchProducts(); }}
+                    onCancel={() => setCurrentView('list')}
                 />
-            ) : (
-                <button className="add-product-btn" onClick={() => setIsAdding(true)}>
-                    + Ավելացնել Նոր Ապրանք
-                </button>
             )}
 
-            {/* 2. Խմբագրման Ֆորմա */}
-            {editingProduct && (
+            {currentView === 'edit' && selectedProduct && (
                 <EditProductForm
-                    product={editingProduct}
-                    onUpdate={handleProductUpdated}
-                    onCancel={() => setEditingProduct(null)}
+                    product={selectedProduct}
+                    onUpdate={() => { setCurrentView('list'); setSelectedProduct(null); fetchProducts(); }}
+                    onCancel={() => { setCurrentView('list'); setSelectedProduct(null); }}
                 />
             )}
 
-            {/* 3. Ապրանքների Աղյուսակ */}
-            <h3>Առկա Ապրանքներ ({products.length})</h3>
-            {error && <p style={{ color: 'red' }}>Սխալ: {error}</p>}
+            {currentView === 'list' && (
+                <div className="product-list-area">
+                    <h3>Ապրանքներ ({products.length})</h3>
+                    {loading ? (
+                        <p>Բեռնվում է...</p>
+                    ) : products.length === 0 ? (
+                        <p>Ապրանքներ չկան։</p>
+                    ) : (
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Նկար</th>
+                                    <th>Վերնագիր (HY)</th>
+                                    <th>Գին</th>
+                                    <th>Գործողություններ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.map((product) => (
+                                    <tr key={product.id}>
+                                        <td>{product.id}</td>
 
-            {/* ... (մնացած աղյուսակը մնում է նույնը) ... */}
-            <div className="table-responsive">
-                <table className="product-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Նկար</th>
-                            <th>Վերնագիր (Հայ)</th>
-                            <th className="hide-on-mobile">Կատեգորիա (Հայ)</th>
-                            <th className="hide-on-mobile">Կատեգորիա (Ընդհ.)</th>
-                            <th className="hide-on-mobile">Վերնագիր (Անգլ)</th>
-                            <th>Գին</th>
-                            <th>Գործողություններ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.map((product) => (
-                            <tr key={product.id}>
-                                <td>{product.id}</td>
-                                <td>
-                                    {product.image_url && (
-                                        <img src={product.image_url} alt={product.title_hy} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
-                                    )}
-                                </td>
-                                <td>{product.title_hy}</td>
-                                <td className="hide-on-mobile">{product.category_hy}</td>
-                                <td className="hide-on-mobile">{product.category}</td>
-                                <td className="hide-on-mobile">{product.title_en}</td>
-                                <td>{product.price} €</td>
-                                <td>
-                                    <button className="action-btn edit-btn" onClick={() => setEditingProduct(product)}>
-                                        Փոփոխել
-                                    </button>
-                                    <button className="action-btn delete-btn" onClick={() => handleDelete(product.id)}>
-                                        Ջնջել
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                                        {/* ✅ ՆԿԱՐ */}
+                                        <td>
+                                            {product.image_url ? (
+                                                <img
+                                                    src={product.image_url}
+                                                    alt={product.title_hy}
+                                                    className="product-thumb"
+                                                />
+                                            ) : (
+                                                <span className="no-image">Չկա</span>
+                                            )}
+                                        </td>
+
+                                        <td>{product.title_hy}</td>
+                                        <td className="price">{product.price} €</td>
+                                        <td>
+                                            <button
+                                                className="table-btn edit"
+                                                onClick={() => handleEdit(product)}
+                                            >
+                                                Խմբագրել
+                                            </button>
+                                            <button
+                                                className="table-btn delete"
+                                                onClick={() => handleDelete(product.id)}
+                                            >
+                                                Ջնջել
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
