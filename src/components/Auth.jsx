@@ -56,7 +56,7 @@ const Auth = () => {
             </h3>
 
             <form onSubmit={handleAuth}>
-                <div style={{ marginBottom: '15px' }}>
+                <div style={{ marginBottom: '15px', color: ' #1225f8ff' }}>
                     <label htmlFor="email">Էլ. Փոստ:</label>
                     <input
                         type="email"
@@ -64,11 +64,11 @@ const Auth = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '10px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ddd' }}
+                        style={{ width: '100%', padding: '10px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ddd',  }}
                     />
                 </div>
 
-                <div style={{ marginBottom: '20px' }}>
+                <div style={{ marginBottom: '20px', color: ' #1225f8ff' }}>
                     <label htmlFor="password">Գաղտնաբառ:</label>
                     <input
                         type="password"

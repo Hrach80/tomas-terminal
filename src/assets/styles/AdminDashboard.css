@@ -1,569 +1,286 @@
 /* ====================================================
-   AdminDashboard.css
-   Modern dark admin panel with neon accents
-   Place in: src/assets/styles/AdminDashboard.css
+   Admin Dashboard - Neon Dark Theme (Compact Version)
    ==================================================== */
 
 /* -------------------- VARIABLES -------------------- */
 :root {
-    --bg: #070707;
-    /* page background */
-    --panel: #0f1113;
-    /* card/panel background */
-    --muted: #9aa3a8;
-    /* muted text */
-    --text: #e8f6ef;
-    /* main text */
-    --neon-green: #00ff88;
-    /* primary neon */
-    --neon-cyan: #00d4ff;
-    /* secondary neon */
+    --bg-color: #0d0d0d;
+    --card-bg: #1a1a1a;
+    --text-color: #e6ffe6;
+    --muted-text: #88aa88;
+    --primary: #00ff88;
+    --secondary: #00d4ff;
     --danger: #ff5d6c;
-    --glass: rgba(255, 255, 255, 0.03);
-    --radius: 12px;
-    --soft-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.03);
-    --transition: 180ms cubic-bezier(.2, .9, .2, 1);
-    --max-width: 1150px;
+    --radius: 8px;
+    /* Smalel radius for compact */
+    --shadow-neon: 0 0 10px rgba(0, 255, 136, 0.6);
+    --transition: 0.2s ease;
 }
 
-/* -------------------- BASE -------------------- */
+/* -------------------- RESET -------------------- */
 * {
     box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-    height: 100%;
     margin: 0;
+    padding: 0;
 }
 
 body {
-    background: linear-gradient(180deg, rgba(10, 10, 10, 1) 0%, rgba(6, 6, 6, 1) 100%);
-    color: var(--text);
-    font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 1.35;
-    padding-bottom: 48px;
+    font-family: 'Poppins', 'Arial', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.5;
 }
 
-/* -------------------- DASHBOARD WRAPPER -------------------- */
+/* -------------------- DASHBOARD -------------------- */
 .admin-dashboard {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    gap: 22px;
-    padding: 18px;
+    align-items: center;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
 }
 
-/* -------------------- HEADER -------------------- */
-.dashboard-header {
-    width: 100%;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-    border-radius: 14px;
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--soft-shadow);
-    backdrop-filter: blur(6px);
+/* Headings */
+h1,
+.dashboard-header h2 {
+    color: var(--primary);
+    text-shadow: 0 0 6px var(--primary);
+}
+
+h1 {
+    font-size: 16px;
 }
 
 .dashboard-header h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    letter-spacing: 0.2px;
-    color: var(--neon-green);
-    text-shadow: 0 6px 18px rgba(0, 255, 136, 0.06);
+    font-size: 1.4rem;
 }
 
-/* action buttons group */
+/* -------------------- HEADER & ACTIONS -------------------- */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--primary);
+}
+
 .dashboard-actions {
     display: flex;
-    gap: 10px;
-    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
-/* primary button style */
 .dashboard-actions button {
-    appearance: none;
+    padding: 6px 10px;
     border: none;
-    outline: none;
+    border-radius: var(--radius);
     cursor: pointer;
-    padding: 8px 14px;
-    border-radius: 10px;
     font-weight: 600;
-    font-size: 0.92rem;
-    transition: transform var(--transition), box-shadow var(--transition), background-color var(--transition);
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.02));
-    color: var(--text);
-    border: 1px solid rgba(255, 255, 255, 0.035);
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), inset 0 -1px 0 rgba(255, 255, 255, 0.02);
+    color: #0d0d0d;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.6), inset 0 0 3px rgba(0, 255, 136, 0.2);
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
 }
 
-/* neon primary */
-.dashboard-actions button:first-child {
-    background: linear-gradient(180deg, rgba(0, 255, 136, 0.06), rgba(0, 255, 136, 0.02));
-    color: var(--text);
-    border: 1px solid rgba(0, 255, 136, 0.12);
-    box-shadow: 0 8px 30px rgba(0, 255, 136, 0.03);
+.dashboard-actions button:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 0 14px var(--shadow-neon), inset 0 0 4px var(--shadow-neon);
 }
 
 .dashboard-actions button:nth-child(2) {
-    background: linear-gradient(180deg, rgba(0, 212, 255, 0.06), rgba(0, 212, 255, 0.02));
-    border: 1px solid rgba(0, 212, 255, 0.10);
-    color: var(--text);
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
 }
 
-/* logout button - danger */
 .logout-btn {
-    background: linear-gradient(180deg, rgba(255, 93, 108, 0.08), rgba(255, 93, 108, 0.02));
-    border: 1px solid rgba(255, 93, 108, 0.12);
+    background: var(--danger);
     color: #fff;
+    box-shadow: 0 0 8px rgba(255, 93, 108, 0.6);
 }
 
-.dashboard-actions button:hover {
-    transform: translateY(-3px);
+.logout-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 0 14px rgba(255, 93, 108, 0.8);
 }
 
-/* disabled */
 .dashboard-actions button:disabled {
     opacity: 0.5;
-    transform: none;
     cursor: not-allowed;
 }
 
 /* -------------------- PRODUCT LIST AREA -------------------- */
 .product-list-area {
     width: 100%;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0.01));
-    border-radius: 14px;
-    border: 1px solid var(--glass-border);
-    padding: 22px;
-    box-shadow: var(--soft-shadow);
+    background-color: var(--card-bg);
+    padding: 15px;
+    border-radius: var(--radius);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.15);
 }
 
-/* header */
 .product-list-area h3 {
-    margin: 0 0 16px 0;
-    color: var(--neon-cyan);
-    font-size: 1.08rem;
-    letter-spacing: 0.4px;
-    display: inline-block;
-    padding-bottom: 4px;
-    border-bottom: 1px solid rgba(0, 212, 255, 0.06);
-}
-
-/* small helper text */
-.product-list-area p {
-    color: var(--muted);
-    margin: 8px 0 0 0;
-    font-size: 0.95rem;
+    margin-bottom: 15px;
+    color: var(--secondary);
+    font-size: 1.2rem;
+    text-shadow: 0 0 6px var(--secondary);
 }
 
 /* -------------------- TABLE -------------------- */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 14px;
-    background: transparent;
-    border-radius: 10px;
-    overflow: hidden;
+    min-width: 650px;
 }
 
-/* table head */
-thead th {
+thead {
+    background-color: rgba(0, 212, 255, 0.1);
+}
+
+th,
+td {
+    padding: 8px 10px;
     text-align: left;
-    font-size: 0.78rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    padding: 10px 12px;
-    background: rgba(255, 255, 255, 0.01);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.15);
+    font-size: 0.85rem;
 }
 
-/* table rows & cells */
+th {
+    color: var(--secondary);
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0 0 4px var(--secondary);
+}
+
 tbody tr {
-    transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    transition: all 0.2s ease;
 }
 
 tbody tr:hover {
-    background: linear-gradient(90deg, rgba(0, 255, 136, 0.03), rgba(0, 212, 255, 0.02));
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 255, 136, 0.05);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 255, 136, 0.2);
 }
 
-td {
-    padding: 14px 12px;
-    vertical-align: middle;
-    font-size: 0.95rem;
-    color: var(--text);
-}
-
-/* price cell styling (subtle neon) */
-td.price {
-    font-weight: 700;
-    color: var(--neon-green);
-    letter-spacing: 0.4px;
-}
-
-/* actions cell */
-td .action-group {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-/* buttons inside table */
-.table-btn {
-    border: none;
-    padding: 8px 12px;
-    border-radius: 9px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.86rem;
-    transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-}
-
-/* edit (blue) */
-.table-btn.edit {
-    background: linear-gradient(180deg, rgba(0, 122, 204, 0.12), rgba(0, 122, 204, 0.04));
-    color: #eaf6ff;
-    border: 1px solid rgba(0, 122, 204, 0.12);
-}
-
-/* delete (danger) */
-.table-btn.delete {
-    background: linear-gradient(180deg, rgba(255, 93, 108, 0.06), rgba(255, 93, 108, 0.02));
-    color: #fff;
-    border: 1px solid rgba(255, 93, 108, 0.12);
-}
-
-/* small hover lift */
-.table-btn:hover {
-    transform: translateY(-3px);
-}
-
-/* -------------------- NO-IMAGE / EMPTY STATE -------------------- */
-.no-image {
-    color: var(--muted);
-    font-style: italic;
-}
-
-/* -------------------- FORM (Add / Edit) GENERIC STYLES -------------------- */
-/* These target AddProductForm / EditProductForm common classes.
-   If your forms use different classNames, either update them here
-   or add the same classes in your form components. */
-
-.product-form {
-    width: 100%;
-    max-width: 920px;
-    margin: 18px auto 28px auto;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-    padding: 18px;
-    border-radius: 12px;
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--soft-shadow);
-}
-
-/* form rows */
-.product-form .row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.product-form label {
-    display: block;
-    font-size: 0.88rem;
-    color: var(--muted);
-    margin-bottom: 6px;
-}
-
-/* inputs */
-.product-form input[type="text"],
-.product-form textarea,
-.product-form input[type="number"],
-.product-form select {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    color: var(--text);
-    outline: none;
-    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
-}
-
-.product-form textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-/* focus */
-.product-form input:focus,
-.product-form textarea:focus,
-.product-form select:focus {
-    box-shadow: 0 8px 20px rgba(0, 255, 136, 0.06);
-    border-color: rgba(0, 255, 136, 0.18);
-    transform: translateY(-2px);
-}
-
-/* form buttons */
-.form-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 6px;
-}
-
-/* primary submit */
-.form-actions .btn-primary {
-    background: linear-gradient(180deg, rgba(0, 255, 136, 0.12), rgba(0, 255, 136, 0.04));
-    border: 1px solid rgba(0, 255, 136, 0.12);
-    color: #02110b;
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-weight: 700;
-}
-
-/* cancel */
-.form-actions .btn-cancel {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    color: var(--muted);
-    padding: 10px 12px;
-    border-radius: 10px;
-}
-
-/* -------------------- PRODUCT THUMBNAILS -------------------- */
+/* -------------------- PRODUCT THUMBNAIL -------------------- */
 .product-thumb {
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 255, 136, 0.15);
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.25), 0 0 20px rgba(0, 255, 136, 0.08) inset;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-radius: 4px;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 6px var(--primary), inset 0 0 3px var(--primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .product-thumb:hover {
     transform: scale(1.15);
-    box-shadow: 0 0 18px rgba(0, 255, 136, 0.45), 0 0 35px rgba(0, 212, 255, 0.25);
+    box-shadow: 0 0 12px var(--primary), inset 0 0 4px var(--secondary);
 }
 
 .no-image {
-    font-size: 0.85rem;
-    color: #777;
-    font-style: italic;
-    opacity: 0.7;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 0.7rem;
 }
 
-/* 📱 Ռեսպոնսիվ ոճեր */
-/* 📱 Ռեսպոնսիվ ոճեր */
-
-/* -------------------- Tablet / փոքր լափտոփ (≤1024px) -------------------- */
-@media (max-width: 1024px) {
-    .dashboard-header {
-        padding: 12px 18px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .dashboard-header h2 {
-        font-size: 1.1rem;
-    }
-
-    .dashboard-actions {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .product-list-area {
-        padding: 18px;
-    }
-
-    table {
-        font-size: 0.92em;
-    }
-
-    .product-thumb {
-        width: 55px;
-        height: 55px;
-    }
-
-    button {
-        font-size: 0.88em;
-        padding: 6px 10px;
-    }
-
-    .product-form {
-        padding: 16px;
-    }
-
-    .product-form .row {
-        gap: 10px;
-    }
+/* -------------------- PRICE -------------------- */
+.price {
+    font-weight: 600;
+    color: var(--primary);
+    text-shadow: 0 0 4px var(--primary);
 }
 
-/* -------------------- Small tablet / large phone (≤768px) -------------------- */
+/* -------------------- TABLE ACTION BUTTONS -------------------- */
+.table-btn {
+    padding: 4px 8px;
+    border-radius: var(--radius);
+    font-size: 0.75rem;
+}
+
+.table-btn.edit {
+    background-color: var(--secondary);
+    color: #0d0d0d;
+    box-shadow: 0 0 6px var(--secondary);
+}
+
+.table-btn.edit:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px var(--secondary);
+}
+
+.table-btn.delete {
+    background-color: var(--danger);
+    color: #fff;
+    box-shadow: 0 0 6px var(--danger);
+}
+
+.table-btn.delete:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px var(--danger);
+}
+
+/* -------------------- FORM -------------------- */
+.admin-dashboard form {
+    background-color: var(--card-bg);
+    padding: 15px;
+    border-radius: var(--radius);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.15);
+}
+.action-group{
+    display: flex;
+    max-width: 130px;
+    justify-content: space-between;
+}
+
+/* -------------------- RESPONSIVE -------------------- */
 @media (max-width: 768px) {
     .dashboard-header {
         flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 12px;
+        align-items: flex-start;
+        gap: 10px;
+    
     }
 
-    .dashboard-header h2 {
-        font-size: 1rem;
-    }
-
-    .dashboard-actions {
-        justify-content: center;
-        gap: 6px;
-    }
-
-    .product-list-area {
-        padding: 14px;
-    }
-
-    table {
-        font-size: 0.9em;
-    }
-
-    thead {
-        display: none;
-    }
-
-    tbody tr {
-        display: block;
-        margin-bottom: 12px;
-        padding: 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.02);
-        transform: none !important;
-    }
-
-    td {
-        display: flex;
-        justify-content: space-between;
-        padding: 8px 6px;
-        border: none;
-    }
-
-    td::before {
-        content: attr(data-label);
-        color: var(--muted);
-        font-weight: 600;
-        margin-right: 8px;
-        min-width: 100px;
-    }
-
-    .product-thumb {
-        width: 50px;
-        height: 50px;
-    }
-
-    button {
-        font-size: 0.85em;
-        padding: 5px 8px;
-    }
-
-    .product-form {
-        padding: 14px;
-    }
-
-    .product-form .row {
-        flex-direction: column;
-        gap: 8px;
-    }
-}
-
-/* -------------------- Mobile (≤480px) -------------------- */
-@media (max-width: 480px) {
-    .dashboard-header {
-        padding: 10px;
-    }
-
-    .dashboard-header h2 {
-        font-size: 0.95rem;
-    }
-
-    .dashboard-actions {
-        flex-direction: column;
-        gap: 6px;
-        width: 100%;
-    }
-
-    .product-list-area {
-        padding: 12px;
-    }
-
-    table {
-        font-size: 0.85em;
-    }
-
-    tbody tr {
-        padding: 10px;
-    }
-
-    td::before {
+    .dashboard-actions button {
+        flex: 1 1 45%;
         min-width: 90px;
-        font-size: 0.82em;
     }
 
-    .product-thumb {
-        width: 45px;
-        height: 45px;
+    .logout-btn {
+        flex: 1 1 100%;
     }
 
-    button {
-        font-size: 0.8em;
-        padding: 4px 6px;
-    }
-
-    .product-form {
-        padding: 12px;
-    }
-
-    .product-form .row {
-        gap: 6px;
+    table {
+        min-width: 700px;
     }
 }
 
-/* -------------------- Extra small / very small phones (≤360px) -------------------- */
-@media (max-width: 360px) {
+@media (max-width: 480px) {
     .dashboard-header h2 {
-        font-size: 0.9rem;
+        font-size: 1.2rem;
     }
 
-    .product-thumb {
-        width: 40px;
-        height: 40px;
+    .dashboard-actions button {
+        flex: 1 1 100%;
     }
 
-    button {
-        font-size: 0.75em;
+    table {
+        min-width: 650px;
+    }
+
+    th,
+    td {
+        padding: 5px 6px;
+    }
+
+    .table-btn {
+        font-size: 0.65rem;
         padding: 3px 5px;
-    }
-
-    td::before {
-        min-width: 80px;
-    }
-
-    .product-form {
-        padding: 10px;
     }
 }

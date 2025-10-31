@@ -1,282 +1,259 @@
 /* ====================================================
-   global.css
-   Modern dark theme, neon accents, responsive
+   Neon Dark Compact Dashboard - Base Styles
    ==================================================== */
 
-/* -------------------- VARIABLES -------------------- */
-:root {
-    --primary-color: #00ff99;
-    /* Նեոն կանաչ */
-    --secondary-color: #00ccff;
-    /* Նեոն կապույտ */
-    --danger-color: #ff3366;
-    /* Ջնջման / կարմիր */
-    --bg-color: #0d0d0d;
-    /* Մուգ հիմնական ֆոն */
-    --card-bg: #1a1a1a;
-    /* Բլոկների ֆոն */
-    --border-color: rgba(0, 255, 136, 0.25);
-    --text-color: #e6ffe6;
-    /* Բաց կանաչավուն տեքստ */
-    --muted-text: #88aa88;
-    /* Թույլ գույն */
-    --shadow-neon: 0 0 15px rgba(0, 255, 136, 0.3);
-    --radius: 12px;
-    --transition: 0.25s ease;
-}
-
-/* -------------------- BASE RESET -------------------- */
-* {
+/* ------------------------------------------- */
+/* 1. Global Reset and Base Styles */
+/* ------------------------------------------- */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-html,
-body {
-    height: 100%;
-}
-
 body {
     font-family: 'Poppins', 'Arial', sans-serif;
-    color: var(--text-color);
-    background-color: var(--bg-color);
-    line-height: 1.6;
-    transition: background 0.4s ease, color 0.4s ease;
-}
-
-/* -------------------- CONTAINERS -------------------- */
-.app-container {
-    display: flex;
-    flex-direction: column;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #e6ffe6;
+    /* Light neon text */
+    background-color: #0d0d0d;
+    /* Dark background */
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.admin-main {
-    flex-grow: 1;
-    padding: 40px;
-    background: var(--bg-color);
-    transition: padding 0.3s ease;
+/* ------------------------------------------- */
+/* 2. Typography */
+/* ------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: inherit;
+    line-height: 1.2;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: #00ff88;
+    /* Neon green */
+    text-shadow: 0 0 6px #00ff88;
 }
 
-/* -------------------- HEADER -------------------- */
-.admin-header {
-    background: linear-gradient(90deg, #0f0f0f, #121212);
-    padding: 20px 40px;
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    transition: padding 0.3s ease;
+a {
+    color: #00d4ff;
+    /* Neon blue */
+    text-decoration: none;
+    transition: color 0.2s;
 }
 
-.admin-header h1 {
-    font-size: 1.8em;
-    color: var(--primary-color);
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
-    transition: font-size 0.3s ease;
+a:hover {
+    color: #00a8cc;
+    text-decoration: underline;
 }
 
-/* -------------------- FOOTER -------------------- */
-.admin-footer {
-    background: #111;
-    border-top: 1px solid var(--border-color);
-    padding: 15px;
-    text-align: center;
-    color: var(--muted-text);
-    font-size: 0.9em;
-}
-
-/* -------------------- BUTTONS -------------------- */
+/* ------------------------------------------- */
+/* 3. Buttons (Global) */
+/* ------------------------------------------- */
 button {
-    background: var(--primary-color);
-    color: #000;
-    border: none;
-    border-radius: var(--radius);
-    padding: 10px 18px;
-    font-weight: 600;
     cursor: pointer;
-    transition: all var(--transition);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #0d0d0d;
+    box-shadow: 0 0 6px rgba(0, 255, 136, 0.6);
 }
 
-button:hover {
+button:hover:not(:disabled) {
+    transform: scale(1.05) translateY(-1px);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.8);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Specific Types */
+.btn-primary {
+    background: #00ff88;
+    color: #0d0d0d;
+}
+
+.btn-primary:hover {
     background: #00cc66;
-    box-shadow: 0 0 12px var(--shadow-neon);
-    transform: scale(1.05);
 }
 
-button.delete,
-button.danger {
-    background: var(--danger-color);
+.btn-success {
+    background: #28a745;
+    color: #0d0d0d;
+}
+
+.btn-success:hover {
+    background: #1e7e34;
+}
+
+.btn-danger {
+    background: #ff3366;
     color: #fff;
 }
 
-button.delete:hover,
-button.danger:hover {
-    box-shadow: 0 0 12px rgba(255, 51, 102, 0.5);
+.btn-danger:hover {
+    background: #c82333;
 }
 
-/* -------------------- INPUTS -------------------- */
-input,
-textarea,
-select {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    border-radius: var(--radius);
-    padding: 10px 14px;
+/* ------------------------------------------- */
+/* 4. Form Elements */
+/* ------------------------------------------- */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+    display: block;
     width: 100%;
-    margin-top: 5px;
-    transition: border var(--transition), box-shadow var(--transition);
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #e6ffe6;
+    background-color: #1a1a1a;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input:focus,
-textarea:focus,
-select:focus {
-    border-color: var(--primary-color);
-    box-shadow: var(--shadow-neon);
+textarea:focus {
+    border-color: #00ff88;
     outline: none;
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
 }
 
-/* -------------------- TABLES -------------------- */
+input[type="file"] {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* ------------------------------------------- */
+/* 5. Table Styles (Compact Neon) */
+/* ------------------------------------------- */
 table {
     width: 100%;
     border-collapse: collapse;
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
-    transition: font-size 0.3s ease;
+    min-width: 600px;
+}
+
+thead {
+    background-color: rgba(0, 255, 136, 0.1);
 }
 
 th,
 td {
-    padding: 14px 18px;
-    border-bottom: 1px solid rgba(0, 255, 136, 0.15);
+    padding: 6px 8px;
     text-align: left;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+    font-size: 0.85rem;
 }
 
 th {
-    background: rgba(0, 255, 136, 0.1);
-    color: var(--primary-color);
-    font-weight: 600;
-    text-shadow: 0 0 6px rgba(0, 255, 136, 0.4);
+    color: #00d4ff;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0 0 4px #00d4ff;
 }
 
-tr:hover {
-    background: rgba(0, 255, 136, 0.05);
+tbody tr {
+    transition: all 0.2s ease;
 }
 
-/* -------------------- RESPONSIVE -------------------- */
-@media (max-width: 1024px) {
-    .admin-main {
-        padding: 30px;
-    }
-
-    .admin-header {
-        padding: 18px 24px;
-    }
-
-    .admin-header h1 {
-        font-size: 1.6em;
-    }
-
-    table {
-        font-size: 0.95em;
-    }
+tbody tr:hover {
+    background-color: rgba(0, 255, 136, 0.05);
+    transform: translateY(-1px);
 }
 
+/* ------------------------------------------- */
+/* 6. Table Buttons / Actions */
+.table-btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.table-btn.edit {
+    background-color: #00d4ff;
+    color: #0d0d0d;
+    box-shadow: 0 0 6px #00d4ff;
+}
+
+.table-btn.edit:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px #00d4ff;
+}
+
+.table-btn.delete {
+    background-color: #ff3366;
+    color: #fff;
+    box-shadow: 0 0 6px #ff3366;
+}
+
+.table-btn.delete:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px #ff3366;
+}
+
+/* ------------------------------------------- */
+/* 7. Compact Responsive Adjustments */
 @media (max-width: 768px) {
-    .admin-main {
-        padding: 20px;
-    }
-
-    .admin-header {
-        padding: 15px 18px;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .admin-header h1 {
-        font-size: 1.4em;
-        margin-bottom: 10px;
-    }
-
     table {
-        font-size: 0.9em;
+        min-width: 500px;
     }
 
-    input,
-    textarea,
-    select {
-        font-size: 0.9em;
-        padding: 8px 10px;
+    th,
+    td {
+        padding: 5px 6px;
     }
 
     button {
-        font-size: 0.9em;
-        padding: 8px 12px;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+
+    input,
+    textarea {
+        padding: 6px 8px;
+        font-size: 0.85rem;
     }
 }
 
 @media (max-width: 480px) {
-    .admin-main {
-        padding: 15px;
-    }
-
-    .admin-header {
-        padding: 12px 16px;
-    }
-
-    .admin-header h1 {
-        font-size: 1.2em;
-    }
-
     table {
-        font-size: 0.85em;
+        min-width: 450px;
     }
 
-    input,
-    textarea,
-    select {
-        font-size: 0.85em;
-        padding: 6px 8px;
+    th,
+    td {
+        padding: 4px 5px;
+        font-size: 0.8rem;
     }
 
     button {
-        font-size: 0.85em;
-        padding: 6px 10px;
-    }
-}
-
-@media (max-width: 360px) {
-    .admin-main {
-        padding: 10px;
-    }
-
-    .admin-header {
-        padding: 10px 12px;
-    }
-
-    .admin-header h1 {
-        font-size: 1.1em;
-    }
-
-    table {
-        font-size: 0.8em;
+        padding: 4px 8px;
+        font-size: 0.75rem;
     }
 
     input,
-    textarea,
-    select {
-        font-size: 0.8em;
+    textarea {
         padding: 5px 6px;
-    }
-
-    button {
-        font-size: 0.8em;
-        padding: 5px 6px;
+        font-size: 0.8rem;
     }
 }
