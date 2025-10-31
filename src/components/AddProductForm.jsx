@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { productImagesBucket } from '../supabaseClient';
-// import './AddProductForm.css'; // Եթե Ձեր CSS-ը այլևս App.jsx-ի կողմից չի բեռնվում, կարող եք այն ներմուծել այստեղ
 
 const AddProductForm = ({ onProductAdded, onCancel }) => {
-    // ------------------ Title States (4 Լեզու) ------------------
-    // Թողնում ենք title/description դաշտերը, քանի դեռ սխալ չեն տալիս
+    // ------------------ Title States (4 Լեզու) - ԱՆՓՈՓՈԽ ------------------
     const [titleHy, setTitleHy] = useState('');
     const [titleEn, setTitleEn] = useState('');
     const [titleRu, setTitleRu] = useState('');
     const [titleNl, setTitleNl] = useState('');
 
-    // ---------------- Description States (4 Լեզու) ----------------
+    // ---------------- Description States (4 Լեզու) - ԱՆՓՈՓՈԽ ----------------
     const [descriptionHy, setDescriptionHy] = useState('');
     const [descriptionEn, setDescriptionEn] = useState('');
     const [descriptionRu, setDescriptionRu] = useState('');
     const [descriptionNl, setDescriptionNl] = useState('');
 
-    // ---------------- Category States (ՄԻԱՅՆ ԳՈՅՈՒԹՅՈՒՆ ՈՒՆԵՑՈՂՆԵՐԸ) ----------------
-    const [category, setCategory] = useState(''); // Ընդհանուր 'category'
+    // ---------------- Category States (Ուղղված է) ----------------
+    const [category, setCategory] = useState(''); // ✅ Օգտագործվում է որպես ԸՆԴՀԱՆՈՒՐ / ԱՆԳԼԵՐԵՆ
     const [categoryHy, setCategoryHy] = useState(''); // Հայերեն
-    // category_en, category_ru, category_nl ՀԵՌԱՑՎԱԾ ԵՆ
 
-    // ---------------- General States ----------------
+    // ✅ ՌՈՒՍԵՐԵՆ ԵՎ ՆԻԴԵՐԼԱՆԴԵՐԵՆ
+    const [categoryRu, setCategoryRu] = useState('');
+    const [categoryNl, setCategoryNl] = useState('');
+    // ...
+
+    // ---------------- General States - ԱՆՓՈՓՈԽ ----------------
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -63,7 +65,6 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
 
             const imageUrl = await uploadImage(image);
 
-            // Ուղարկում ենք ՄԻԱՅՆ գոյություն ունեցող սյունակները
             const newProduct = {
                 // Title
                 title_hy: titleHy,
@@ -77,18 +78,22 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
                 description_ru: descriptionRu,
                 description_nl: descriptionNl,
 
-                // Category (ՄԻԱՅՆ category և category_hy)
-                category: category,
+                // Category (Ուղղված է)
+                category: category, // ✅ category-ն որպես ընդհանուր (Անգլերեն)
                 category_hy: categoryHy,
-                // category_en, category_ru, category_nl ՉԵՆ ՈՒՂԱՐԿՎՈՒՄ
+                // category_en ՀԵՌԱՑՎԱԾ Է
+                category_ru: categoryRu,
+                category_nl: categoryNl,
 
                 price: price,
                 image_url: imageUrl,
             };
 
+            // Դուք պետք է նաև հեռացնեք category_en սյունակը Supabase-ից,
+            // եթե արդեն ավելացրել եք այն՝ նախորդ սխալը լուծելու համար:
+
             const { data, error } = await supabase
                 .from('products')
-                // Supabase-ը ավտոմատ կերպով կլցնի այս դաշտերը NULL-ով, եթե դրանք բացակայեն newProduct օբյեկտում
                 .insert([newProduct])
                 .select();
 
@@ -99,7 +104,6 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
             onProductAdded(data[0]);
         } catch (err) {
             console.error(err);
-            // Եթե այլ սխալներ առաջանան, այն կցուցադրվի այստեղ
             setError(err.message);
         } finally {
             setLoading(false);
@@ -111,7 +115,7 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
             <h3>Ավելացնել Նոր Ապրանք</h3>
             <form onSubmit={handleSubmit}>
 
-                {/* Title Dields (4 Languanges) */}
+                {/* Title Dields - ԱՆՓՈՓՈԽ */}
                 <h4>Վերնագրեր</h4>
                 <label>Վերնագիր (Հայերեն)*</label>
                 <input type="text" value={titleHy} onChange={(e) => setTitleHy(e.target.value)} required />
@@ -124,7 +128,7 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
 
                 <hr />
 
-                {/* Description Fields (4 Languanges) */}
+                {/* Description Fields - ԱՆՓՈՓՈԽ */}
                 <h4>Նկարագրություններ</h4>
                 <label>Նկարագրություն (Հայերեն)*</label>
                 <textarea value={descriptionHy} onChange={(e) => setDescriptionHy(e.target.value)} required />
@@ -137,18 +141,23 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
 
                 <hr />
 
-                {/* Category Fields (ՄԻԱՅՆ category և category_hy) */}
+                {/* ✅ Category Fields (Ուղղված է) */}
                 <h4>Կատեգորիաներ</h4>
-                <label>Կատեգորիա (Ընդհանուր)</label>
+                <label>Կատեգորիա (Անգլերեն/Ընդհանուր)</label>
                 <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
                 <label>Կատեգորիա (Հայերեն)</label>
                 <input type="text" value={categoryHy} onChange={(e) => setCategoryHy(e.target.value)} />
 
-                {/* category_en, category_ru, category_nl input-ները ՀԵՌԱՑՎԱԾ ԵՆ */}
+                {/* ✅ category_en-ը ՀԵՌԱՑՎԱԾ է, ավելացվել են category_ru/nl */}
+                <label>Կատեգորիա (Ռուսերեն)</label>
+                <input type="text" value={categoryRu} onChange={(e) => setCategoryRu(e.target.value)} />
+                <label>Կատեգորիա (Նիդերլանդերեն)</label>
+                <input type="text" value={categoryNl} onChange={(e) => setCategoryNl(e.target.value)} />
+                {/* ------------------------------------- */}
 
                 <hr />
 
-                {/* Price and Image */}
+                {/* Price and Image - ԱՆՓՈՓՈԽ */}
                 <label>Գին*</label>
                 <input type="number" value={price} onChange={(e) => setPrice(parseFloat(e.target.value))} required />
 
