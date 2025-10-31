@@ -1,5 +1,3 @@
-// src/components/AdminDashboard.jsx
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import Login from './Login';
@@ -72,9 +70,18 @@ const AdminDashboard = () => {
             <header className="dashboard-header">
                 <h2>Ադմինիստրատորի Վահանակ</h2>
                 <div className="dashboard-actions">
-                    <button onClick={() => { setCurrentView('list'); setSelectedProduct(null); }}>Ապրանքների Ցուցակ</button>
-                    <button onClick={() => setCurrentView('add')}>+ Ավելացնել Ապրանք</button>
-                    <button className="logout-btn" onClick={handleLogout} disabled={loading}>
+                    <button type="button" onClick={() => { setCurrentView('list'); setSelectedProduct(null); }}>
+                        Ապրանքների Ցուցակ
+                    </button>
+                    <button type="button" onClick={() => setCurrentView('add')}>
+                        + Ավելացնել Ապրանք
+                    </button>
+                    <button
+                        type="button"
+                        className="logout-btn"
+                        onClick={handleLogout}
+                        disabled={loading}
+                    >
                         {loading ? 'Ելք...' : 'Ելք'}
                     </button>
                 </div>
@@ -116,10 +123,8 @@ const AdminDashboard = () => {
                             <tbody>
                                 {products.map((product) => (
                                     <tr key={product.id}>
-                                        <td>{product.id}</td>
-
-                                        {/* ✅ ՆԿԱՐ */}
-                                        <td>
+                                        <td data-label="ID">{product.id}</td>
+                                        <td data-label="Նկար">
                                             {product.image_url ? (
                                                 <img
                                                     src={product.image_url}
@@ -130,22 +135,25 @@ const AdminDashboard = () => {
                                                 <span className="no-image">Չկա</span>
                                             )}
                                         </td>
-
-                                        <td>{product.title_hy}</td>
-                                        <td className="price">{product.price} €</td>
-                                        <td>
-                                            <button
-                                                className="table-btn edit"
-                                                onClick={() => handleEdit(product)}
-                                            >
-                                                Խմբագրել
-                                            </button>
-                                            <button
-                                                className="table-btn delete"
-                                                onClick={() => handleDelete(product.id)}
-                                            >
-                                                Ջնջել
-                                            </button>
+                                        <td data-label="Վերնագիր (HY)">{product.title_hy}</td>
+                                        <td data-label="Գին" className="price">{product.price} €</td>
+                                        <td data-label="Գործողություններ">
+                                            <div className="action-group">
+                                                <button
+                                                    type="button"
+                                                    className="table-btn edit"
+                                                    onClick={() => handleEdit(product)}
+                                                >
+                                                    Խմբագրել
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="table-btn delete"
+                                                    onClick={() => handleDelete(product.id)}
+                                                >
+                                                    Ջնջել
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}

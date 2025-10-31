@@ -1,13 +1,16 @@
-/* src/styles/global.css */
+/* ====================================================
+   global.css
+   Modern dark theme, neon accents, responsive
+   ==================================================== */
 
-/* 🌈 Գլոբալ փոփոխականներ (Նեոնային թեմա) */
+/* -------------------- VARIABLES -------------------- */
 :root {
     --primary-color: #00ff99;
     /* Նեոն կանաչ */
     --secondary-color: #00ccff;
     /* Նեոն կապույտ */
     --danger-color: #ff3366;
-    /* Կարմիր / ջնջման համար */
+    /* Ջնջման / կարմիր */
     --bg-color: #0d0d0d;
     /* Մուգ հիմնական ֆոն */
     --card-bg: #1a1a1a;
@@ -18,9 +21,11 @@
     --muted-text: #88aa88;
     /* Թույլ գույն */
     --shadow-neon: 0 0 15px rgba(0, 255, 136, 0.3);
+    --radius: 12px;
+    --transition: 0.25s ease;
 }
 
-/* 🔄 Ռեսետ և Բազային ոճեր */
+/* -------------------- BASE RESET -------------------- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -40,14 +45,21 @@ body {
     transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* 🔹 Համընդհանուր կոնտեյներ */
+/* -------------------- CONTAINERS -------------------- */
 .app-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* 🔹 Header */
+.admin-main {
+    flex-grow: 1;
+    padding: 40px;
+    background: var(--bg-color);
+    transition: padding 0.3s ease;
+}
+
+/* -------------------- HEADER -------------------- */
 .admin-header {
     background: linear-gradient(90deg, #0f0f0f, #121212);
     padding: 20px 40px;
@@ -56,22 +68,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    transition: padding 0.3s ease;
 }
 
 .admin-header h1 {
     font-size: 1.8em;
     color: var(--primary-color);
     text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+    transition: font-size 0.3s ease;
 }
 
-/* 🔹 Գլխավոր հատված */
-.admin-main {
-    flex-grow: 1;
-    padding: 40px;
-    background: var(--bg-color);
-}
-
-/* 🔹 Footer */
+/* -------------------- FOOTER -------------------- */
 .admin-footer {
     background: #111;
     border-top: 1px solid var(--border-color);
@@ -81,25 +89,24 @@ body {
     font-size: 0.9em;
 }
 
-/* 🔹 Կոճակներ */
+/* -------------------- BUTTONS -------------------- */
 button {
     background: var(--primary-color);
     color: #000;
     border: none;
-    border-radius: 10px;
+    border-radius: var(--radius);
     padding: 10px 18px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition);
 }
 
 button:hover {
     background: #00cc66;
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+    box-shadow: 0 0 12px var(--shadow-neon);
     transform: scale(1.05);
 }
 
-/* 🔹 Ջնջման կոճակ */
 button.delete,
 button.danger {
     background: var(--danger-color);
@@ -109,21 +116,20 @@ button.danger {
 button.delete:hover,
 button.danger:hover {
     box-shadow: 0 0 12px rgba(255, 51, 102, 0.5);
-    transform: scale(1.05);
 }
 
-/* 🔹 Input / Textarea ընդհանուր ոճեր */
+/* -------------------- INPUTS -------------------- */
 input,
 textarea,
 select {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
     color: var(--text-color);
-    border-radius: 10px;
+    border-radius: var(--radius);
     padding: 10px 14px;
     width: 100%;
     margin-top: 5px;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
+    transition: border var(--transition), box-shadow var(--transition);
 }
 
 input:focus,
@@ -134,14 +140,15 @@ select:focus {
     outline: none;
 }
 
-/* 🔹 Աղյուսակների ընդհանուր ոճավորում */
+/* -------------------- TABLES -------------------- */
 table {
     width: 100%;
     border-collapse: collapse;
     background: var(--card-bg);
-    border-radius: 12px;
+    border-radius: var(--radius);
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+    transition: font-size 0.3s ease;
 }
 
 th,
@@ -162,24 +169,114 @@ tr:hover {
     background: rgba(0, 255, 136, 0.05);
 }
 
-/* 🔹 Ռեսպոնսիվություն */
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 1024px) {
+    .admin-main {
+        padding: 30px;
+    }
+
+    .admin-header {
+        padding: 18px 24px;
+    }
+
+    .admin-header h1 {
+        font-size: 1.6em;
+    }
+
+    table {
+        font-size: 0.95em;
+    }
+}
+
 @media (max-width: 768px) {
     .admin-main {
         padding: 20px;
     }
 
     .admin-header {
-        padding: 15px 20px;
+        padding: 15px 18px;
         flex-direction: column;
         align-items: flex-start;
     }
 
     .admin-header h1 {
-        font-size: 1.5em;
+        font-size: 1.4em;
         margin-bottom: 10px;
     }
 
     table {
         font-size: 0.9em;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 0.9em;
+        padding: 8px 10px;
+    }
+
+    button {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-main {
+        padding: 15px;
+    }
+
+    .admin-header {
+        padding: 12px 16px;
+    }
+
+    .admin-header h1 {
+        font-size: 1.2em;
+    }
+
+    table {
+        font-size: 0.85em;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 0.85em;
+        padding: 6px 8px;
+    }
+
+    button {
+        font-size: 0.85em;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 360px) {
+    .admin-main {
+        padding: 10px;
+    }
+
+    .admin-header {
+        padding: 10px 12px;
+    }
+
+    .admin-header h1 {
+        font-size: 1.1em;
+    }
+
+    table {
+        font-size: 0.8em;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 0.8em;
+        padding: 5px 6px;
+    }
+
+    button {
+        font-size: 0.8em;
+        padding: 5px 6px;
     }
 }
