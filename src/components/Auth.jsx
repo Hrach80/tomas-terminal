@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
-// Կարող եք ավելացնել համապատասխան CSS ոճեր ավելի ուշ
+import '../assets/styles/Auth.css'; // ԿԱՐԵՎՈՐ՝ Ավելացնում ենք CSS ֆայլի իմպորտը
 
 const Auth = () => {
     const [loading, setLoading] = useState(false);
@@ -21,14 +21,24 @@ const Auth = () => {
         try {
             if (isSignUp) {
                 // ԳՐԱՆՑՈՒՄ (Sign Up)
-                const { error } = await supabase.auth.signUp({
+                // Ուշադրություն: Խորհուրդ է տրվում Admin Dashboard-ի համար օգտագործել
+                // միայն մուտքը, կամ գրանցումից հետո օգտատիրոջը պարտադիր դարձնել Ադմին:
+                const { data, error } = await supabase.auth.signUp({
                     email,
                     password
                 });
 
                 if (error) throw error;
 
-                setMessage('Հաստատման հղումն ուղարկվել է Ձեր էլ. փոստին։ Խնդրում ենք ստուգել։');
+                // Եթե գրանցումը հաջող է, բայց չկա սեսիա (պահանջվում է հաստատում)
+                if (data.user === null) {
+                    setMessage('Հաստատման հղումն ուղարկվել է Ձեր էլ. փոստին։ Խնդրում ենք ստուգել և մուտք գործել։');
+                } else {
+                    // Եթե ավտոմատ մուտք է լինում (կախված Supabase-ի կարգավորումներից)
+                    setMessage('Հաջողությամբ գրանցվել եք և մուտք եք գործել։');
+                }
+
+                setIsSignUp(false); // Ցուցադրել Մուտքի էկրանը հաստատումից հետո։
 
             } else {
                 // ՄՈՒՏՔ (Sign In)
@@ -39,64 +49,73 @@ const Auth = () => {
 
                 if (error) throw error;
 
-                // Եթե մուտքը հաջող է, App.jsx-ը ավտոմատ կերպով կցուցադրի AdminDashboard-ը
+                // Եթե մուտքը հաջող է, AdminDashboard-ը կցուցադրվի ավտոմատ
             }
         } catch (err) {
             console.error(err.message);
-            setError(err.message);
+            // Փոխում ենք սխալի հաղորդագրությունը ավելի ընկալելիի
+            const friendlyError = err.message.includes('Invalid login credentials')
+                ? 'Սխալ էլ. փոստ կամ գաղտնաբառ:'
+                : err.message;
+
+            setError(friendlyError);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="auth-container" style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', backgroundColor: '#fff' }}>
-            <h3 style={{ textAlign: 'center', color: '#007bff' }}>
-                {isSignUp ? 'Գրանցվել' : 'Ադմին Մուտք'}
+        <div className="auth-container">
+            <h3 className="auth-header">
+                {isSignUp ? 'Ադմին Գրանցում' : 'Ադմին Մուտք'}
             </h3>
 
-            <form onSubmit={handleAuth}>
-                <div style={{ marginBottom: '15px', color: ' #1225f8ff' }}>
-                    <label htmlFor="email">Էլ. Փոստ:</label>
+            <form onSubmit={handleAuth} className="auth-form">
+                <div className="form-group">
+                    <label htmlFor="email" className="auth-label">Էլ. Փոստ:</label>
                     <input
                         type="email"
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '10px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ddd'  }}
+                        className="auth-input"
                     />
                 </div>
 
-                <div style={{ marginBottom: '20px', color: ' #1225f8ff' }}>
-                    <label htmlFor="password">Գաղտնաբառ:</label>
+                <div className="form-group">
+                    <label htmlFor="password" className="auth-label">Գաղտնաբառ:</label>
                     <input
                         type="password"
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '10px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ddd' }}
+                        className="auth-input"
                     />
                 </div>
 
-                {error && <p style={{ color: 'red', textAlign: 'center' }}>Սխալ: {error}</p>}
-                {message && <p style={{ color: 'green', textAlign: 'center' }}>{message}</p>}
+                {error && <p className="auth-error">Սխալ: {error}</p>}
+                {message && <p className="auth-message">{message}</p>}
 
                 <button
                     type="submit"
                     disabled={loading}
-                    style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'blue', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                    className="auth-submit-btn"
                 >
                     {loading ? 'Բեռնվում է...' : (isSignUp ? 'Գրանցվել' : 'Մուտք Գործել')}
                 </button>
             </form>
 
-            <div style={{ marginTop: '15px', textAlign: 'center' }}>
+            <div className="auth-footer">
                 <button
                     type="button"
-                    onClick={() => setIsSignUp(!isSignUp)}
-                    style={{ background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', padding: '0' }}
+                    onClick={() => {
+                        setIsSignUp(!isSignUp);
+                        setError('');
+                        setMessage('');
+                    }}
+                    className="auth-toggle-btn"
                 >
                     {isSignUp ? 'Արդեն ունե՞ք հաշիվ (Մուտք)' : 'Ցանկանո՞ւմ եք Գրանցվել'}
                 </button>
