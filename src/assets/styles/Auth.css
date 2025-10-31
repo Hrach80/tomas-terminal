@@ -106,25 +106,7 @@
     box-shadow: none;
 }
 
-/* Մուտք/Գրանցում փոխարկման կոճակը */
-.auth-footer {
-    text-align: center;
-    margin-top: 20px;
-}
 
-.auth-toggle-btn {
-    background: none;
-    border: none;
-    color: var(--neon-cyan, #00d4ff);
-    cursor: pointer;
-    padding: 5px;
-    font-size: 0.9rem;
-    transition: color var(--transition);
-}
-
-.auth-toggle-btn:hover {
-    color: var(--neon-green, #00ff88);
-}
 
 /* Ռեսպոնսիվություն */
 @media (max-width: 500px) {
