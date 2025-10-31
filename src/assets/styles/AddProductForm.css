@@ -1,93 +1,105 @@
-/* Container for the form to give it structure within the dashboard */
+/* ====================================================
+   Neon Dark Compact Add Form
+   ==================================================== */
+
+/* Container for the form */
 .add-form-container {
-    background-color: #ffffff;
-    padding: 30px;
+    background-color: #1a1a1a;
+    /* Dark card background */
+    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    border-left: 5px solid #007bff;
-    /* Accent color */
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
+    margin-top: 15px;
+    border-left: 4px solid #00ff88;
+    /* Neon accent */
+    transition: all 0.3s ease;
 }
 
+.add-form-container:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+}
+
+/* Headings */
 .add-form-container h3 {
-    color: #343a40;
+    color: #00ff88;
+    /* Neon green */
     margin-top: 0;
-    margin-bottom: 25px;
-    font-size: 1.8rem;
-    border-bottom: 1px solid #e9ecef;
-    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+    padding-bottom: 8px;
 }
 
 .add-form-container h4 {
-    color: #495057;
-    margin-top: 25px;
-    margin-bottom: 15px;
-    padding: 5px 10px;
-    background-color: #f1f1f1;
-    border-left: 4px solid #007bff;
-    font-size: 1.2rem;
+    color: #00d4ff;
+    /* Neon blue */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 4px 8px;
+    border-left: 3px solid #00ff88;
+    font-size: 1.1rem;
 }
 
-/* Form Styling */
+/* Form Layout */
 .add-form-container form {
     display: grid;
     grid-template-columns: 1fr;
-    /* Single column layout for inputs */
-    gap: 15px 0;
+    gap: 10px 0;
 }
 
 /* Separator Line */
 .add-form-container hr {
     border: 0;
     height: 1px;
-    background: #dee2e6;
-    margin: 25px 0;
+    background: rgba(0, 255, 136, 0.2);
+    margin: 20px 0;
 }
 
-/* Label Styles */
+/* Labels */
 .add-form-container label {
     display: block;
     font-weight: 600;
-    color: #495057;
+    color: #e6ffe6;
+    /* Light neon text */
     margin-bottom: 5px;
-    margin-top: 10px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
-/* Input and Textarea Styles */
+/* Inputs and Textareas */
 .add-form-container input[type="text"],
 .add-form-container input[type="number"],
 .add-form-container input[type="file"],
 .add-form-container textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1rem;
+    padding: 8px 10px;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #e6ffe6;
+    background-color: #0d0d0d;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .add-form-container input:focus,
 .add-form-container textarea:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #00ff88;
+    box-shadow: 0 0 6px rgba(0, 255, 136, 0.5);
     outline: none;
 }
 
 .add-form-container textarea {
-    min-height: 80px;
+    min-height: 70px;
     resize: vertical;
 }
 
-/* Error Message */
+/* Error Messages */
 .add-form-container p[style*="color: red"] {
-    background-color: #f8d7da;
-    color: #721c24 !important;
-    border: 1px solid #f5c6cb;
-    padding: 10px;
+    background-color: #330000;
+    color: #ff3366 !important;
+    border: 1px solid #ff3366;
+    padding: 8px;
     border-radius: 4px;
-    margin-top: 20px;
+    margin-top: 15px;
     font-weight: 500;
 }
 
@@ -95,49 +107,53 @@
 .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 15px;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 255, 136, 0.2);
 }
 
 .form-actions button {
-    padding: 10px 20px;
+    padding: 8px 16px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
-    transition: background-color 0.2s, opacity 0.2s;
-    min-width: 120px;
+    transition: all 0.2s ease;
+    min-width: 100px;
+    font-size: 0.85rem;
 }
 
+/* Submit / Add Button */
 .form-actions button[type="submit"] {
-    background-color: #28a745;
-    /* Success color for Add */
-    color: white;
+    background-color: #00ff88;
+    color: #0d0d0d;
+    box-shadow: 0 0 6px #00ff88;
 }
 
 .form-actions button[type="submit"]:hover:not(:disabled) {
-    background-color: #218838;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px #00ff88;
 }
 
+/* Cancel Button */
 .form-actions button[type="button"] {
-    /* Cancel button */
-    background-color: #6c757d;
-    /* Secondary color for Cancel */
-    color: white;
+    background-color: #00d4ff;
+    color: #0d0d0d;
+    box-shadow: 0 0 6px #00d4ff;
 }
 
 .form-actions button[type="button"]:hover:not(:disabled) {
-    background-color: #5a6268;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px #00d4ff;
 }
 
 .form-actions button:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
 }
 
-/* Responsive adjustments (optional, but good practice) */
+/* Responsive adjustments */
 @media (max-width: 600px) {
     .add-form-container {
         padding: 15px;
@@ -145,7 +161,7 @@
 
     .form-actions {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
     }
 
     .form-actions button {
