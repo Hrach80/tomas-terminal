@@ -3,8 +3,9 @@ import { supabase } from '../supabaseClient';
 import Login from './Login';
 import AddProductForm from './AddProductForm';
 import EditProductForm from './EditProductForm';
-import SpecialOffersSettings from '../components/SpecialOffersSettings'; // << ՆՈՐ ԻՄՊՈՐՏ >>
-import '../assets/styles/AdminDashboard.css';
+import SpecialOffersSettings from './SpecialOffersSettings'; // <=== ՃՇԳՐՏՎԱԾ ԻՄՊՈՐՏ (Ենթադրենք նույն պապկայում է)
+import '../assets/styles/AddProductForm.css';
+
 
 const AdminDashboard = () => {
     const [session, setSession] = useState(null);
@@ -13,6 +14,9 @@ const AdminDashboard = () => {
     const [currentView, setCurrentView] = useState('list');
     const [selectedProduct, setSelectedProduct] = useState(null);
 
+    // ... (fetchProducts, useEffect, handleLogout, handleDelete, handleEdit - Անփոփոխ)
+
+    // fetchProducts ֆունկցիան
     const fetchProducts = async () => {
         setLoading(true);
         const { data, error } = await supabase
@@ -26,7 +30,7 @@ const AdminDashboard = () => {
         setLoading(false);
     };
 
-    // ... useEffect մնում է անփոփոխ
+    // useEffect
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             setSession(session);
@@ -42,7 +46,7 @@ const AdminDashboard = () => {
         return () => listener.subscription.unsubscribe();
     }, []);
 
-    // ... handleLogout մնում է անփոփոխ
+    // handleLogout
     const handleLogout = async () => {
         setLoading(true);
         const { error } = await supabase.auth.signOut();
@@ -54,7 +58,7 @@ const AdminDashboard = () => {
         }
     };
 
-    // ... handleDelete մնում է անփոփոխ
+    // handleDelete
     const handleDelete = async (id) => {
         if (!window.confirm('Ջնջե՞լ այս ապրանքը։')) return;
         const { error } = await supabase.from('products').delete().eq('id', id);
@@ -62,7 +66,7 @@ const AdminDashboard = () => {
         else setProducts(products.filter((p) => p.id !== id));
     };
 
-    // ... handleEdit մնում է անփոփոխ
+    // handleEdit
     const handleEdit = (product) => {
         setSelectedProduct(product);
         setCurrentView('edit');
@@ -70,75 +74,37 @@ const AdminDashboard = () => {
 
     if (!session) return <Login />;
 
-    return (
-        <div className="admin-dashboard">
-            <header className="dashboard-header">
+    // ===================================================
+    // 🚩renderView Ֆունկցիան՝ Միավորելով Բոլոր Դիտումները
+    // ===================================================
 
-                <div className="dashboard-actions">
-                    {/* Կոճակ 1: Ապրանքների Ցուցակ */}
-                    <button
-                        type="button"
-                        onClick={() => { setCurrentView('list'); setSelectedProduct(null); }}
-                        className={currentView === 'list' || currentView === 'edit' ? 'active-btn' : ''}
-                    >
-                        Ապրանքների Ցուցակ
-                    </button>
-                    {/* Կոճակ 2: Ավելացնել Ապրանք */}
-                    <button
-                        type="button"
-                        onClick={() => setCurrentView('add')}
-                        className={currentView === 'add' ? 'active-btn' : ''}
-                    >
-                        + Ավելացնել Ապրանք
-                    </button>
-
-                    {/* << Կոճակ 3: ԱԿՑԻԱՆԵՐԻ ԿԱՐԳԱՎՈՐՈՒՄ >> */}
-                    <button
-                        type="button"
-                        onClick={() => { setCurrentView('offers'); setSelectedProduct(null); }}
-                        className={currentView === 'offers' ? 'active-btn' : ''}
-                    >
-                        Ակցիաների Կարգավորում 🎁
-                    </button>
-
-                    {/* Կոճակ 4: Ելք */}
-                    <button
-                        type="button"
-                        className="logout-btn"
-                        onClick={handleLogout}
-                        disabled={loading}
-                    >
-                        {loading ? 'Ելք...' : 'Ելք'}
-                    </button>
-                </div>
-            </header>
-
-            <main className="dashboard-content"> {/* Ավելացնում եմ main թեգը ավելի լավ կառուցվածքի համար */}
-
-                {/* 1. Ավելացնել Ապրանքի Ֆորմա */}
-                {currentView === 'add' && (
+    const renderView = () => {
+        switch (currentView) {
+            case 'add': // Օգտագործում ենք 'add' currentView-ի փոխարեն 'add-product'-ի (ինչպես Ձեր կոճակում է)
+                return (
                     <AddProductForm
                         onProductAdded={() => { setCurrentView('list'); fetchProducts(); }}
                         onCancel={() => setCurrentView('list')}
                     />
-                )}
-
-                {/* 2. Խմբագրել Ապրանքի Ֆորմա */}
-                {currentView === 'edit' && selectedProduct && (
+                );
+            case 'edit':
+                return selectedProduct ? (
                     <EditProductForm
                         product={selectedProduct}
                         onUpdate={() => { setCurrentView('list'); setSelectedProduct(null); fetchProducts(); }}
                         onCancel={() => { setCurrentView('list'); setSelectedProduct(null); }}
                     />
-                )}
-
-                {/* << 3. ԱԿՑԻԱՆԵՐԻ ԿԱՐԳԱՎՈՐՄԱՆ ԷՋԸ >> */}
-                {currentView === 'offers' && (
-                    <SpecialOffersSettings />
-                )}
-
-                {/* 4. Ապրանքների Ցուցակ (List) */}
-                {currentView === 'list' && (
+                ) : (
+                    // Եթե խմբագրման ռեժիմ է, բայց ապրանք չկա, վերադառնալ ցուցակին
+                    <div className="error-msg">Խմբագրման համար ապրանք չի ընտրվել։</div>
+                );
+            case 'offers':
+                // ✅ Ակցիաների կարգավորում՝ առանց ավտոմատ վերադարձի
+                return <SpecialOffersSettings />;
+            case 'list':
+            default:
+                // Ցուցակը ցուցադրող JSX-ը
+                return (
                     <div className="product-list-area">
                         <h3>Ապրանքներ ({products.length})</h3>
                         {loading ? (
@@ -148,11 +114,16 @@ const AdminDashboard = () => {
                         ) : (
                             <table>
                                 <thead>
-                                    {/* ... Աղյուսակի Գլխամասը */}
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Նկար</th>
+                                        <th>Վերնագիր (HY)</th>
+                                        <th>Գին</th>
+                                        <th>Գործողություններ</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     {products.map((product) => (
-                                        // ... Աղյուսակի Տողերը
                                         <tr className='td-obshi' key={product.id}>
                                             <td data-label="ID">{product.id}</td>
                                             <td data-label="Նկար">
@@ -192,7 +163,56 @@ const AdminDashboard = () => {
                             </table>
                         )}
                     </div>
-                )}
+                );
+        }
+    };
+
+
+    return (
+        <div className="admin-dashboard">
+            <header className="dashboard-header">
+                <div className="dashboard-actions">
+                    {/* Կոճակ 1: Ապրանքների Ցուցակ */}
+                    <button
+                        type="button"
+                        onClick={() => { setCurrentView('list'); setSelectedProduct(null); }}
+                        className={currentView === 'list' || currentView === 'edit' ? 'active-btn' : ''}
+                    >
+                        Ապրանքների Ցուցակ
+                    </button>
+                    {/* Կոճակ 2: Ավելացնել Ապրանք */}
+                    <button
+                        type="button"
+                        onClick={() => setCurrentView('add')}
+                        className={currentView === 'add' ? 'active-btn' : ''}
+                    >
+                        + Ավելացնել Ապրանք
+                    </button>
+
+                    {/* Կոճակ 3: ԱԿՑԻԱՆԵՐԻ ԿԱՐԳԱՎՈՐՈՒՄ */}
+                    <button
+                        type="button"
+                        onClick={() => { setCurrentView('offers'); setSelectedProduct(null); }}
+                        className={currentView === 'offers' ? 'active-btn' : ''}
+                    >
+                        Ակցիաների Կարգավորում 🎁
+                    </button>
+
+                    {/* Կոճակ 4: Ելք */}
+                    <button
+                        type="button"
+                        className="logout-btn"
+                        onClick={handleLogout}
+                        disabled={loading}
+                    >
+                        {loading ? 'Ելք...' : 'Ելք'}
+                    </button>
+                </div>
+            </header>
+
+            <main className="dashboard-content">
+                {/* ԲԱՂԱԴՐԻՉԻ ՑՈՒՑԱԴՐՈՒՄԸ renderView-ի ՄԻՋՈՑՈՎ */}
+                {renderView()}
             </main>
         </div>
     );

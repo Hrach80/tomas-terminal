@@ -1,16 +1,17 @@
-// src/components/Admin/SpecialOffersSettings.jsx
+// src/components/SpecialOffersSettings.jsx
 
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { v4 as uuidv4 } from 'uuid'; // uuid-ը, որը տեղադրել ենք
+import React, { useState, useEffect } from "react"; // ✅ Ճիշտ Իմպորտ
+import { supabase } from "../supabaseClient";
+import { v4 as uuidv4 } from "uuid";
+import "../assets/styles/SpecialOffersSettings.css";
 
-// Խնդրում եմ, ստուգեք, որ 'product-images'-ը Ձեր Storage Bucket-ի ճիշտ անունն է
 const OFFERS_BUCKET = 'product-images';
 
 const SpecialOffersSettings = () => {
+    // State-երի ճիշտ սահմանում
     const [loading, setLoading] = useState(true);
-    const [heroImageUrl, setHeroImageUrl] = useState(''); // Պահպանված URL
-    const [imageFile, setImageFile] = useState(null); // Ընտրված ֆայլը բեռնելու համար
+    const [heroImageUrl, setHeroImageUrl] = useState('');
+    const [imageFile, setImageFile] = useState(null);
     const [targetDate, setTargetDate] = useState('');
     const [discountPercentage, setDiscountPercentage] = useState('');
     const [status, setStatus] = useState('');
@@ -20,163 +21,176 @@ const SpecialOffersSettings = () => {
         fetchSettings();
     }, []);
 
+    // 1. Տվյալների Բեռնում (FETCH)
     const fetchSettings = async () => {
         setLoading(true);
-        setStatus('');
+        try {
+            const { data, error } = await supabase
+                .from('special_offers_config')
+                .select('id, target_date, hero_image_url, discount_percentage')
+                .eq('id', 1)
+                .limit(1);
 
-        const { data, error } = await supabase
-            .from('special_offers_config')
-            .select('hero_image_url, target_date, discount_percentage')
-            .eq('id', 1)
-            .single(); // << Խնդիրը այստեղ է
+            if (error) throw error;
 
-        if (error) {
-            if (error.code === 'PGRST116') {
-                console.log('Special offers config row not found, using default settings.');
-                setStatus('Կարգավորումների տողը դեռ ստեղծված չէ (օգտագործվում են լռելյայն արժեքները)');
-            } else {
-                console.error('Error fetching settings:', error);
-                setStatus(`Սխալ տվյալների բեռնման ժամանակ: ${error.message}`);
+            if (data && data.length > 0) {
+                const config = data[0];
+
+                setHeroImageUrl(config.hero_image_url || '');
+                setDiscountPercentage(config.discount_percentage || '');
+
+                // Ֆորմատավորել ամսաթիվը input[type="datetime-local"]-ի համար
+                if (config.target_date) {
+                    const localTime = new Date(config.target_date).toISOString().substring(0, 16);
+                    setTargetDate(localTime);
+                } else {
+                    setTargetDate('');
+                }
             }
-            // Դատարկ դեպքում data-ն կլինի null, և կօգտագործվեն useState-ի սկզբնական արժեքները
 
-        } else if (data) {
-            // ... մնացած կոդը նույնն է
-            setHeroImageUrl(data.hero_image_url || '');
-            // ...
+        } catch (error) {
+            console.error('Failed to fetch settings:', error);
+            setStatus('Կարգավորումները բեռնելիս սխալ առաջացավ։');
+        } finally {
+            setLoading(false); // ✅ Ավարտել loading-ը
         }
-        setLoading(false);
     };
 
-    const handleImageUpload = async () => {
-        if (!imageFile) return heroImageUrl;
+    // 2. Նկարի Բեռնում (HANDLE IMAGE UPLOAD) - Ճիշտ տրամաբանություն
+    // src/components/SpecialOffersSettings.jsx - ՖՈՒՆԿՑԻԱՆԵՐԻ ԲԱԺԻՆ
+
+    // 2. Նկարի Բեռնում (HANDLE IMAGE UPLOAD) - Ճիշտ տրամաբանություն
+    const handleImageUpload = async (file) => {
+        // Եթե ֆայլ չկա, վերադարձնել ընթացիկ URL-ը (առանց փոփոխության)
+        if (!file) return heroImageUrl;
 
         setImageUploadStatus('Նկարը բեռնվում է...');
-        // Ստեղծում ենք ունիկալ ֆայլի անուն և տեղադրում 'offers/' ֆոլդերի մեջ
-        const uniqueFileName = `hero_offer_${uuidv4()}_${imageFile.name.replace(/\s/g, '_')}`;
+
+        // Ստեղծել ֆայլի յուրահատուկ անուն՝ ապահովելու համար, որ անունները չեն կրկնվի
+        const uniqueFileName = `hero_offer_${uuidv4()}_${file.name.replace(/\s/g, '_')}`;
         const filePath = `offers/${uniqueFileName}`;
 
+        // Բեռնել ֆայլը Supabase Storage-ում
         const { error: uploadError } = await supabase.storage
             .from(OFFERS_BUCKET)
-            .upload(filePath, imageFile, {
-                cacheControl: '3600',
-                upsert: false
-            });
+            .upload(filePath, file, { cacheControl: '3600', upsert: false });
 
         if (uploadError) {
             setImageUploadStatus(`Նկարի բեռնման սխալ: ${uploadError.message}`);
-            throw uploadError;
+            throw uploadError; // Դադարեցնել աշխատանքը և գցել սխալը catch բլոկ
         }
 
+        // Ստանալ բեռնված ֆայլի հանրային URL-ը
         const { data: publicUrlData } = supabase.storage
             .from(OFFERS_BUCKET)
             .getPublicUrl(filePath);
 
         setImageUploadStatus('Նկարը հաջողությամբ բեռնվեց։');
+
+        // Վերադարձնել նոր URL-ը
         return publicUrlData.publicUrl;
     };
 
 
-    const handleSubmit = async (e) => {
+    // 3. Տվյալների Պահպանում (HANDLE SAVE SETTINGS)
+    const handleSaveSettings = async (e) => {
         e.preventDefault();
         setLoading(true);
         setStatus('');
-        setImageUploadStatus('');
-
-        let finalImageUrl = heroImageUrl;
 
         try {
-            // Քայլ 1: Բեռնել նոր նկարը (եթե ընտրված է)
-            if (imageFile) {
-                finalImageUrl = await handleImageUpload();
-            }
+            // Ժամանակավորապես ՇՐՋԱՆՑԵԼ նկարի բեռնումը՝ մինչև UPSERT-ի աշխատանքը հաստատվի
+            // Պետք է վերադարձնել. const newImageUrl = imageFile ? await handleImageUpload(imageFile) : heroImageUrl;
+            const newImageUrl = imageFile ? await handleImageUpload(imageFile) : heroImageUrl;
 
-            // Քայլ 2: Թարմացնել տվյալների բազան
-            // Փոխակերպում է տեղական ժամանակը UTC timestamp-ի
-            const utcDate = targetDate ? new Date(targetDate).toISOString() : null;
+            // Տվյալների Փոխարկում
+            const discountValue = discountPercentage ? parseInt(discountPercentage, 10) : null;
+            const targetDateString = targetDate ? new Date(targetDate).toISOString() : null;
 
-            const updateObject = {
-                hero_image_url: finalImageUrl,
-                target_date: utcDate,
-                discount_percentage: parseInt(discountPercentage, 10) || null,
-            };
-
-            const { error: dbError } = await supabase
+            // Ուղղակի UPSERT դեպի աղյուսակ
+            const { error } = await supabase
                 .from('special_offers_config')
-                .update(updateObject)
-                .eq('id', 1);
+                .upsert(
+                    [{
+                        id: 1,
+                        hero_image_url: newImageUrl,
+                        target_date: targetDateString,
+                        discount_percentage: discountValue,
+                    }],
+                    { onConflict: 'id', ignoreDuplicates: false }
+                )
+                .select()
+                .single();
 
-            if (dbError) throw dbError;
+            if (error) throw error;
 
-            setHeroImageUrl(finalImageUrl);
+            setStatus('Կարգավորումները հաջողությամբ պահպանվեցին։');
             setImageFile(null);
-            setStatus('Կարգավորումները հաջողությամբ թարմացվել են։');
+            fetchSettings();
 
         } catch (err) {
-            // Սխալի դեպքում մաքրում ենք loading-ը
-            console.error('Submission Error:', err.message);
-            setStatus(`Գործողության սխալ: ${err.message}`);
+            console.error("Սխալ պահպանման ժամանակ:", err.message || err);
+            setStatus(`Պահպանման սխալ։ ${err.message || 'Տեխնիկական սխալ'}`);
+            // Եթե սխալ է, բեռնումը անջատվելու է finally բլոկում
+
         } finally {
             setLoading(false);
         }
     };
 
-    // Դիզայնի կոդը մնում է նույնը, ինչ նախորդ պատասխանում էր
+    // ... (Your JSX return statement is correct)
     return (
-        <div className="settings-panel product-form">
-            <h3>Ակցիաների Էջի Կարգավորումներ</h3>
-            <form onSubmit={handleSubmit}>
+        <div className="settings-container">
+            {/* ... (rest of the form JSX is correct) */}
+            <h3>🎁 Ակցիաների Կարգավորում</h3>
+            <form onSubmit={handleSaveSettings} className="settings-form">
+                {/* ... (inputs and labels) */}
 
-                {/* 1. Նկարի Բեռնում/Ցուցադրում */}
-                <div className="form-group">
-                    <label>Հերոսական Նկար:</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setImageFile(e.target.files[0])}
-                    />
-                    {imageUploadStatus && <p style={{ color: imageUploadStatus.includes('Սխալ') ? 'red' : 'green', fontSize: '0.9rem' }}>{imageUploadStatus}</p>}
-                </div>
+                <label>Զեղչի Տոկոս (%)</label>
+                <input
+                    type="number"
+                    value={discountPercentage}
+                    onChange={(e) => setDiscountPercentage(e.target.value)}
+                    placeholder="Օրինակ: 15"
+                    min="0"
+                    max="100"
+                />
 
+                <label>Ավարտի Ամսաթիվ (Target Date)</label>
+                <input
+                    type="datetime-local"
+                    value={targetDate}
+                    onChange={(e) => setTargetDate(e.target.value)}
+                />
+
+                <hr />
+
+                <h4>Հերոսի Նկարի Կարգավորում</h4>
                 {heroImageUrl && (
-                    <div className="current-image-preview" style={{ marginBottom: '15px' }}>
-                        <p style={{ color: '#aaa', fontSize: '0.9rem' }}>Ընթացիկ նկար:</p>
-                        <img src={heroImageUrl} alt="Ընթացիկ Ակցիայի Նկար" style={{ maxWidth: '200px', height: 'auto', borderRadius: '8px' }} />
+                    <div className="current-image">
+                        <label>Ընթացիկ Նկար</label>
+                        <img
+                            src={heroImageUrl}
+                            alt="Special Offer Hero"
+                            style={{ maxWidth: '200px', display: 'block' }}
+                        />
                     </div>
                 )}
 
-                {/* 2. Զեղչի Տոկոսը */}
-                <div className="form-group">
-                    <label htmlFor="discountPercentage">Զեղչի Տոկոսը (օրինակ՝ 20):</label>
-                    <input
-                        id="discountPercentage"
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={discountPercentage}
-                        onChange={(e) => setDiscountPercentage(e.target.value)}
-                        placeholder="20"
-                    />
-                </div>
-
-                {/* 3. Թայմերի Վերջնաժամկետը */}
-                <div className="form-group">
-                    <label htmlFor="targetDate">Թայմերի Վերջնաժամկետը:</label>
-                    <input
-                        id="targetDate"
-                        type="datetime-local"
-                        value={targetDate}
-                        onChange={(e) => setTargetDate(e.target.value)}
-                    />
-                </div>
-
-                {status && <p style={{ marginTop: '15px', color: status.startsWith('Սխալ') ? 'red' : 'green' }}>{status}</p>}
+                <label>Նոր Նկար (Ընտրեք ֆայլ)</label>
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImageFile(e.target.files[0])}
+                />
+                {imageUploadStatus && <p className="upload-status">{imageUploadStatus}</p>}
 
                 <div className="form-actions">
                     <button type="submit" disabled={loading}>
-                        {loading ? 'Պահպանվում է...' : 'Պահպանել Փոփոխությունները'}
+                        {loading ? 'Պահպանվում է...' : 'Պահպանել Կարգավորումները'}
                     </button>
                 </div>
+                {status && <p className={status.includes('Սխալ') ? 'error-msg' : 'success-msg'}>{status}</p>}
             </form>
         </div>
     );
