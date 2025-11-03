@@ -1,6 +1,5 @@
-// src/components/SpecialOffersSettings.jsx
 
-import React, { useState, useEffect } from "react"; // ✅ Ճիշտ Իմպորտ
+import React, { useState, useEffect } from "react"; 
 import { supabase } from "../supabaseClient";
 import { v4 as uuidv4 } from "uuid";
 import "../assets/styles/SpecialOffersSettings.css";
@@ -8,7 +7,6 @@ import "../assets/styles/SpecialOffersSettings.css";
 const OFFERS_BUCKET = 'product-images';
 
 const SpecialOffersSettings = () => {
-    // State-երի ճիշտ սահմանում
     const [loading, setLoading] = useState(true);
     const [heroImageUrl, setHeroImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null);
@@ -21,7 +19,6 @@ const SpecialOffersSettings = () => {
         fetchSettings();
     }, []);
 
-    // 1. Տվյալների Բեռնում (FETCH)
     const fetchSettings = async () => {
         setLoading(true);
         try {
@@ -38,8 +35,6 @@ const SpecialOffersSettings = () => {
 
                 setHeroImageUrl(config.hero_image_url || '');
                 setDiscountPercentage(config.discount_percentage || '');
-
-                // Ֆորմատավորել ամսաթիվը input[type="datetime-local"]-ի համար
                 if (config.target_date) {
                     const localTime = new Date(config.target_date).toISOString().substring(0, 16);
                     setTargetDate(localTime);
@@ -52,62 +47,43 @@ const SpecialOffersSettings = () => {
             console.error('Failed to fetch settings:', error);
             setStatus('Կարգավորումները բեռնելիս սխալ առաջացավ։');
         } finally {
-            setLoading(false); // ✅ Ավարտել loading-ը
+            setLoading(false);
         }
     };
 
-    // 2. Նկարի Բեռնում (HANDLE IMAGE UPLOAD) - Ճիշտ տրամաբանություն
-    // src/components/SpecialOffersSettings.jsx - ՖՈՒՆԿՑԻԱՆԵՐԻ ԲԱԺԻՆ
-
-    // 2. Նկարի Բեռնում (HANDLE IMAGE UPLOAD) - Ճիշտ տրամաբանություն
     const handleImageUpload = async (file) => {
-        // Եթե ֆայլ չկա, վերադարձնել ընթացիկ URL-ը (առանց փոփոխության)
         if (!file) return heroImageUrl;
 
         setImageUploadStatus('Նկարը բեռնվում է...');
-
-        // Ստեղծել ֆայլի յուրահատուկ անուն՝ ապահովելու համար, որ անունները չեն կրկնվի
         const uniqueFileName = `hero_offer_${uuidv4()}_${file.name.replace(/\s/g, '_')}`;
         const filePath = `offers/${uniqueFileName}`;
-
-        // Բեռնել ֆայլը Supabase Storage-ում
         const { error: uploadError } = await supabase.storage
             .from(OFFERS_BUCKET)
             .upload(filePath, file, { cacheControl: '3600', upsert: false });
 
         if (uploadError) {
             setImageUploadStatus(`Նկարի բեռնման սխալ: ${uploadError.message}`);
-            throw uploadError; // Դադարեցնել աշխատանքը և գցել սխալը catch բլոկ
+            throw uploadError; 
         }
 
-        // Ստանալ բեռնված ֆայլի հանրային URL-ը
         const { data: publicUrlData } = supabase.storage
             .from(OFFERS_BUCKET)
             .getPublicUrl(filePath);
 
         setImageUploadStatus('Նկարը հաջողությամբ բեռնվեց։');
 
-        // Վերադարձնել նոր URL-ը
         return publicUrlData.publicUrl;
     };
 
-
-    // 3. Տվյալների Պահպանում (HANDLE SAVE SETTINGS)
     const handleSaveSettings = async (e) => {
         e.preventDefault();
         setLoading(true);
         setStatus('');
 
         try {
-            // Ժամանակավորապես ՇՐՋԱՆՑԵԼ նկարի բեռնումը՝ մինչև UPSERT-ի աշխատանքը հաստատվի
-            // Պետք է վերադարձնել. const newImageUrl = imageFile ? await handleImageUpload(imageFile) : heroImageUrl;
             const newImageUrl = imageFile ? await handleImageUpload(imageFile) : heroImageUrl;
-
-            // Տվյալների Փոխարկում
             const discountValue = discountPercentage ? parseInt(discountPercentage, 10) : null;
             const targetDateString = targetDate ? new Date(targetDate).toISOString() : null;
-
-            // Ուղղակի UPSERT դեպի աղյուսակ
             const { error } = await supabase
                 .from('special_offers_config')
                 .upsert(
@@ -131,21 +107,16 @@ const SpecialOffersSettings = () => {
         } catch (err) {
             console.error("Սխալ պահպանման ժամանակ:", err.message || err);
             setStatus(`Պահպանման սխալ։ ${err.message || 'Տեխնիկական սխալ'}`);
-            // Եթե սխալ է, բեռնումը անջատվելու է finally բլոկում
 
         } finally {
             setLoading(false);
         }
     };
 
-    // ... (Your JSX return statement is correct)
     return (
         <div className="settings-container">
-            {/* ... (rest of the form JSX is correct) */}
             <h3>🎁 Ակցիաների Կարգավորում</h3>
             <form onSubmit={handleSaveSettings} className="settings-form">
-                {/* ... (inputs and labels) */}
-
                 <label>Զեղչի Տոկոս (%)</label>
                 <input
                     type="number"

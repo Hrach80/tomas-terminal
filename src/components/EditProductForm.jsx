@@ -1,4 +1,3 @@
-// src/components/EditProductForm.jsx (ՈՒՂՂՎԱԾ)
 
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
@@ -6,25 +5,18 @@ import { productImagesBucket } from '../supabaseClient';
 
 
 const EditProductForm = ({ product, onUpdate, onCancel }) => {
-    // ------------------ Title States (4 Լեզու) ------------------
     const [titleHy, setTitleHy] = useState(product.title_hy || '');
     const [titleEn, setTitleEn] = useState(product.title_en || '');
     const [titleRu, setTitleRu] = useState(product.title_ru || '');
     const [titleNl, setTitleNl] = useState(product.title_nl || '');
-
-    // ---------------- Description States (4 Լեզու) ----------------
     const [descriptionHy, setDescriptionHy] = useState(product.description_hy || '');
     const [descriptionEn, setDescriptionEn] = useState(product.description_en || '');
     const [descriptionRu, setDescriptionRu] = useState(product.description_ru || '');
     const [descriptionNl, setDescriptionNl] = useState(product.description_nl || '');
-
-    // ✅ Category States (Ավելացված Ru և Nl) ----------------
     const [category, setCategory] = useState(product.category || '');
     const [categoryHy, setCategoryHy] = useState(product.category_hy || '');
     const [categoryRu, setCategoryRu] = useState(product.category_ru || '');
     const [categoryNl, setCategoryNl] = useState(product.category_nl || '');
-
-    // ---------------- General States ----------------
     const [price, setPrice] = useState(product.price || 0);
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -61,19 +53,14 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
             const newImageUrl = await uploadImage(image);
 
             const updates = {
-                // Title
                 title_hy: titleHy,
                 title_en: titleEn,
                 title_ru: titleRu,
                 title_nl: titleNl,
-
-                // Description
                 description_hy: descriptionHy,
                 description_en: descriptionEn,
                 description_ru: descriptionRu,
                 description_nl: descriptionNl,
-
-                // ✅ Category (Ավելացված Ru և Nl)
                 category: category,
                 category_hy: categoryHy,
                 category_ru: categoryRu,
@@ -107,8 +94,6 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
         <div className="edit-form-container">
             <h3>Փոփոխել Ապրանքը: {product.title_hy}</h3>
             <form onSubmit={handleSubmit}>
-
-                {/* Title Dields (4 Languanges) */}
                 <h4>Վերնագրեր</h4>
                 <label>Վերնագիր (Հայերեն)</label>
                 <input type="text" value={titleHy} onChange={(e) => setTitleHy(e.target.value)} required />
@@ -118,10 +103,7 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
                 <input type="text" value={titleRu} onChange={(e) => setTitleRu(e.target.value)} />
                 <label>Վերնագիր (Նիդերլանդերեն)</label>
                 <input type="text" value={titleNl} onChange={(e) => setTitleNl(e.target.value)} />
-
                 <hr />
-
-                {/* Description Fields (4 Languanges) */}
                 <h4>Նկարագրություններ</h4>
                 <label>Նկարագրություն (Հայերեն)</label>
                 <textarea value={descriptionHy} onChange={(e) => setDescriptionHy(e.target.value)} required />
@@ -131,10 +113,7 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
                 <textarea value={descriptionRu} onChange={(e) => setDescriptionRu(e.target.value)} />
                 <label>Նկարագրություն (Նիդերլանդերեն)</label>
                 <textarea value={descriptionNl} onChange={(e) => setDescriptionNl(e.target.value)} />
-
                 <hr />
-
-                {/* ✅ Category Fields (Ավելացված Ru և Nl) */}
                 <h4>Կատեգորիաներ</h4>
                 <label>Կատեգորիա (Ընդհանուր/Անգլերեն)</label>
                 <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
@@ -146,8 +125,6 @@ const EditProductForm = ({ product, onUpdate, onCancel }) => {
                 <input type="text" value={categoryNl} onChange={(e) => setCategoryNl(e.target.value)} />
 
                 <hr />
-
-                {/* Price and Image */}
                 <label>Գին</label>
                 <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} required />
 

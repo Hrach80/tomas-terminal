@@ -1,170 +1,223 @@
-/* ====================================================
-   Neon Dark Compact Add Form
-   ==================================================== */
 
-/* Container for the form */
-.add-form-container {
-    background-color: #1a1a1a;
-    /* Dark card background */
+.admin-dashboard {
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
-    margin-top: 15px;
-    border-left: 4px solid #00ff88;
-    /* Neon accent */
-    transition: all 0.3s ease;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-.add-form-container:hover {
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+.dashboard-header {
+    margin-bottom: 30px;
+    padding: 15px 0;
+    border-bottom: 2px solid var(--color-neon-purple);
 }
 
-/* Headings */
+.dashboard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dashboard-actions button {
+    border-color: var(--color-neon-purple);
+    color: var(--color-neon-purple);
+    box-shadow: var(--color-shadow-purple);
+}
+
+.dashboard-actions button.active-btn {
+    background-color: var(--color-neon-purple);
+    color: var(--color-dark);
+    border-color: var(--color-neon-blue);
+    box-shadow: 0 0 10px var(--color-neon-purple), 0 0 20px var(--color-neon-blue);
+}
+
+.dashboard-actions button.logout-btn {
+    margin-left: auto;
+    /* Տեղափոխում է աջ */
+    border-color: var(--color-accent-red);
+    color: var(--color-accent-red);
+}
+
+.dashboard-actions button.logout-btn:hover:not(:disabled) {
+    background-color: var(--color-accent-red);
+    color: var(--color-dark);
+    box-shadow: 0 0 10px var(--color-accent-red);
+}
+
+.dashboard-content {
+    background-color: #10102A;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+}
+
+.add-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 .add-form-container h3 {
-    color: #00ff88;
-    /* Neon green */
-    margin-top: 0;
+    text-align: center;
     margin-bottom: 20px;
-    font-size: 1.5rem;
-    border-bottom: 1px solid rgba(0, 255, 136, 0.3);
-    padding-bottom: 8px;
 }
 
-.add-form-container h4 {
-    color: #00d4ff;
-    /* Neon blue */
-    margin-top: 20px;
-    margin-bottom: 10px;
-    padding: 4px 8px;
-    border-left: 3px solid #00ff88;
-    font-size: 1.1rem;
-}
-
-/* Form Layout */
 .add-form-container form {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px 0;
+    gap: 15px;
 }
 
-/* Separator Line */
+.add-form-container label {
+    color: var(--color-text-light);
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
 .add-form-container hr {
-    border: 0;
-    height: 1px;
-    background: rgba(0, 255, 136, 0.2);
+    border: none;
+    border-top: 1px dashed var(--color-neon-purple);
     margin: 20px 0;
 }
 
-/* Labels */
-.add-form-container label {
-    display: block;
-    font-weight: 600;
-    color: #e6ffe6;
-    /* Light neon text */
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-}
-
-/* Inputs and Textareas */
-.add-form-container input[type="text"],
-.add-form-container input[type="number"],
-.add-form-container input[type="file"],
-.add-form-container textarea {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid rgba(0, 255, 136, 0.3);
-    border-radius: 6px;
-    font-size: 0.9rem;
-    color: #e6ffe6;
-    background-color: #0d0d0d;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.add-form-container input:focus,
-.add-form-container textarea:focus {
-    border-color: #00ff88;
-    box-shadow: 0 0 6px rgba(0, 255, 136, 0.5);
-    outline: none;
-}
-
-.add-form-container textarea {
-    min-height: 70px;
-    resize: vertical;
-}
-
-/* Error Messages */
-.add-form-container p[style*="color: red"] {
-    background-color: #330000;
-    color: #ff3366 !important;
-    border: 1px solid #ff3366;
-    padding: 8px;
-    border-radius: 4px;
-    margin-top: 15px;
-    font-weight: 500;
-}
-
-/* Form Actions (Buttons) */
 .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
+    gap: 15px;
     margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(0, 255, 136, 0.2);
 }
 
-.form-actions button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    min-width: 100px;
-    font-size: 0.85rem;
+
+.product-list-area h3 {
+    text-align: left;
 }
 
-/* Submit / Add Button */
-.form-actions button[type="submit"] {
-    background-color: #00ff88;
-    color: #0d0d0d;
-    box-shadow: 0 0 6px #00ff88;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9em;
 }
 
-.form-actions button[type="submit"]:hover:not(:disabled) {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px #00ff88;
+thead th {
+    background-color: #1a1a3a;
+    color: var(--color-neon-blue);
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 2px solid var(--color-neon-blue);
 }
 
-/* Cancel Button */
-.form-actions button[type="button"] {
-    background-color: #00d4ff;
-    color: #0d0d0d;
-    box-shadow: 0 0 6px #00d4ff;
+tbody tr {
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 0.3s;
 }
 
-.form-actions button[type="button"]:hover:not(:disabled) {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px #00d4ff;
+tbody tr:hover {
+    background-color: #151530;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
 }
 
-.form-actions button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+tbody td {
+    padding: 12px 15px;
 }
 
-/* Responsive adjustments */
+.product-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--color-neon-purple);
+    vertical-align: middle;
+}
+
+.td-tab {
+    white-space: nowrap;
+}
+
+.table-btn.edit {
+    border-color: var(--color-neon-blue);
+    color: var(--color-neon-blue);
+    padding: 5px 10px;
+    font-size: 0.8em;
+}
+
+.table-btn.delete {
+    border-color: var(--color-accent-red);
+    color: var(--color-text-light);
+    padding: 5px 10px;
+    font-size: 0.8em;
+}
+
+
+@media (max-width: 900px) {
+
+    .admin-dashboard {
+        padding: 10px;
+    }
+
+    .product-list-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 10px;
+    }
+
+
+    table {
+        min-width: 700px;
+    }
+
+    thead th,
+    tbody td {
+        padding: 8px 10px;
+    }
+
+    .product-thumb {
+        width: 40px;
+        height: 40px;
+    }
+
+    .td-tab {
+        white-space: nowrap;
+    }
+
+    .action-group button {
+        margin: 0 2px;
+    }
+
+}
+
 @media (max-width: 600px) {
-    .add-form-container {
+    .dashboard-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dashboard-actions button {
+        margin: 5px 0;
+    }
+
+    .dashboard-actions button.logout-btn {
+        margin-left: 0;
+    }
+
+    .dashboard-content {
         padding: 15px;
     }
 
     .form-actions {
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
     }
 
     .form-actions button {
         width: 100%;
     }
+
+    table {
+        min-width: 600px;
+    }
+
+    thead th,
+    tbody td {
+        font-size: 0.8em;
+    }
 }
+

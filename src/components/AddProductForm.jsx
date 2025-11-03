@@ -16,8 +16,8 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
     const [descriptionNl, setDescriptionNl] = useState('');
 
     // ---------------- Category States (Ուղղված է) ----------------
-    const [category, setCategory] = useState(''); // ✅ Օգտագործվում է որպես ԸՆԴՀԱՆՈՒՐ / ԱՆԳԼԵՐԵՆ
-    const [categoryHy, setCategoryHy] = useState(''); // Հայերեն
+    const [category, setCategory] = useState(''); 
+    const [categoryHy, setCategoryHy] = useState(''); 
 
     // ✅ ՌՈՒՍԵՐԵՆ ԵՎ ՆԻԴԵՐԼԱՆԴԵՐԵՆ
     const [categoryRu, setCategoryRu] = useState('');
@@ -31,7 +31,6 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
     const [error, setError] = useState(null);
 
     const uploadImage = async (file) => {
-        // ... (Նկարի ներբեռնման տրամաբանությունը անփոփոխ)
         if (!file) return null;
 
         const fileExt = file.name.split('.').pop();
@@ -66,22 +65,16 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
             const imageUrl = await uploadImage(image);
 
             const newProduct = {
-                // Title
                 title_hy: titleHy,
                 title_en: titleEn,
                 title_ru: titleRu,
                 title_nl: titleNl,
-
-                // Description
                 description_hy: descriptionHy,
                 description_en: descriptionEn,
                 description_ru: descriptionRu,
                 description_nl: descriptionNl,
-
-                // Category (Ուղղված է)
-                category: category, // ✅ category-ն որպես ընդհանուր (Անգլերեն)
+                category: category, 
                 category_hy: categoryHy,
-                // category_en ՀԵՌԱՑՎԱԾ Է
                 category_ru: categoryRu,
                 category_nl: categoryNl,
 
@@ -89,8 +82,6 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
                 image_url: imageUrl,
             };
 
-            // Դուք պետք է նաև հեռացնեք category_en սյունակը Supabase-ից,
-            // եթե արդեն ավելացրել եք այն՝ նախորդ սխալը լուծելու համար:
 
             const { data, error } = await supabase
                 .from('products')
@@ -114,8 +105,6 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
         <div className="add-form-container">
             <h3>Ավելացնել Նոր Ապրանք</h3>
             <form onSubmit={handleSubmit}>
-
-                {/* Title Dields - ԱՆՓՈՓՈԽ */}
                 <h4>Վերնագրեր</h4>
                 <label>Վերնագիր (Հայերեն)*</label>
                 <input type="text" value={titleHy} onChange={(e) => setTitleHy(e.target.value)} required />
@@ -128,7 +117,7 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
 
                 <hr />
 
-                {/* Description Fields - ԱՆՓՈՓՈԽ */}
+
                 <h4>Նկարագրություններ</h4>
                 <label>Նկարագրություն (Հայերեն)*</label>
                 <textarea value={descriptionHy} onChange={(e) => setDescriptionHy(e.target.value)} required />
@@ -140,24 +129,18 @@ const AddProductForm = ({ onProductAdded, onCancel }) => {
                 <textarea value={descriptionNl} onChange={(e) => setDescriptionNl(e.target.value)} />
 
                 <hr />
-
-                {/* ✅ Category Fields (Ուղղված է) */}
                 <h4>Կատեգորիաներ</h4>
                 <label>Կատեգորիա (Անգլերեն/Ընդհանուր)</label>
                 <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
                 <label>Կատեգորիա (Հայերեն)</label>
                 <input type="text" value={categoryHy} onChange={(e) => setCategoryHy(e.target.value)} />
-
-                {/* ✅ category_en-ը ՀԵՌԱՑՎԱԾ է, ավելացվել են category_ru/nl */}
                 <label>Կատեգորիա (Ռուսերեն)</label>
                 <input type="text" value={categoryRu} onChange={(e) => setCategoryRu(e.target.value)} />
                 <label>Կատեգորիա (Նիդերլանդերեն)</label>
                 <input type="text" value={categoryNl} onChange={(e) => setCategoryNl(e.target.value)} />
-                {/* ------------------------------------- */}
-
+    
                 <hr />
 
-                {/* Price and Image - ԱՆՓՈՓՈԽ */}
                 <label>Գին*</label>
                 <input type="number" value={price} onChange={(e) => setPrice(parseFloat(e.target.value))} required />
 

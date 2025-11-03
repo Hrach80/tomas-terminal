@@ -1,259 +1,103 @@
-/* ====================================================
-   Neon Dark Compact Dashboard - Base Styles
-   ==================================================== */
 
-/* ------------------------------------------- */
-/* 1. Global Reset and Base Styles */
-/* ------------------------------------------- */
-*,
-*::before,
-*::after {
+:root {
+    --color-dark: #0A0A1F;
+    --color-neon-blue: #00FFFF;
+    --color-neon-purple: #9A00FF;
+    --color-text-light: #E0FFFF;
+    --color-accent-red: #FF4444;
+    --color-shadow-blue: 0 0 5px var(--color-neon-blue), 0 0 10px var(--color-neon-blue);
+    --color-shadow-purple: 0 0 5px var(--color-neon-purple), 0 0 10px var(--color-neon-purple);
+    --color-border: #1a1a3a;
+}
+
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 body {
-    font-family: 'Poppins', 'Arial', sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #e6ffe6;
-    /* Light neon text */
-    background-color: #0d0d0d;
-    /* Dark background */
+    font-family: 'Consolas', 'Courier New', monospace;
+    background-color: var(--color-dark);
+    color: var(--color-text-light);
+    line-height: 1.6;
     min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
-/* ------------------------------------------- */
-/* 2. Typography */
-/* ------------------------------------------- */
 h1,
 h2,
 h3,
-h4,
-h5,
-h6 {
-    font-family: inherit;
-    line-height: 1.2;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    color: #00ff88;
-    /* Neon green */
-    text-shadow: 0 0 6px #00ff88;
+h4 {
+    color: var(--color-neon-blue);
+    text-shadow: var(--color-shadow-blue);
+    margin-bottom: 15px;
 }
 
-a {
-    color: #00d4ff;
-    /* Neon blue */
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-a:hover {
-    color: #00a8cc;
-    text-decoration: underline;
-}
-
-/* ------------------------------------------- */
-/* 3. Buttons (Global) */
-/* ------------------------------------------- */
 button {
     cursor: pointer;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    padding: 6px 12px;
-    transition: all 0.2s ease;
-    background: linear-gradient(135deg, #00ff88, #00d4ff);
-    color: #0d0d0d;
-    box-shadow: 0 0 6px rgba(0, 255, 136, 0.6);
+    padding: 10px 20px;
+    border: 2px solid var(--color-neon-blue);
+    background-color: var(--color-dark);
+    color: var(--color-neon-blue);
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: var(--color-shadow-blue);
+    margin: 5px;
 }
 
 button:hover:not(:disabled) {
-    transform: scale(1.05) translateY(-1px);
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.8);
+    background-color: var(--color-neon-blue);
+    color: var(--color-dark);
+    box-shadow: 0 0 10px var(--color-neon-blue), 0 0 20px var(--color-neon-blue);
+    transform: translateY(-2px);
 }
 
 button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    box-shadow: none;
+    border-color: var(--color-border);
+    color: #555;
+    background-color: var(--color-dark);
 }
 
-/* Specific Types */
-.btn-primary {
-    background: #00ff88;
-    color: #0d0d0d;
-}
-
-.btn-primary:hover {
-    background: #00cc66;
-}
-
-.btn-success {
-    background: #28a745;
-    color: #0d0d0d;
-}
-
-.btn-success:hover {
-    background: #1e7e34;
-}
-
-.btn-danger {
-    background: #ff3366;
-    color: #fff;
-}
-
-.btn-danger:hover {
-    background: #c82333;
-}
-
-/* ------------------------------------------- */
-/* 4. Form Elements */
-/* ------------------------------------------- */
 input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
+input[type="datetime-local"],
 textarea {
-    display: block;
     width: 100%;
-    padding: 8px 10px;
-    margin-bottom: 10px;
-    border: 1px solid rgba(0, 255, 136, 0.3);
-    border-radius: 6px;
-    font-size: 0.9rem;
-    color: #e6ffe6;
-    background-color: #1a1a1a;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--color-neon-purple);
+    background-color: var(--color-dark);
+    color: var(--color-text-light);
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
 }
 
 input:focus,
 textarea:focus {
-    border-color: #00ff88;
-    outline: none;
-    box-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+    border-color: var(--color-neon-blue);
+    box-shadow: 0 0 5px var(--color-neon-blue);
 }
 
-input[type="file"] {
-    border: none;
-    padding: 0;
-    margin: 0;
+/* ՍԽԱԼՆԵՐ */
+.error-msg,
+p[style*='color: red'] {
+    color: var(--color-accent-red) !important;
+    text-shadow: 0 0 5px var(--color-accent-red);
+    font-weight: bold;
+    margin-top: 10px;
 }
 
-/* ------------------------------------------- */
-/* 5. Table Styles (Compact Neon) */
-/* ------------------------------------------- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 600px;
-}
-
-thead {
-    background-color: rgba(0, 255, 136, 0.1);
-}
-
-th,
-td {
-    padding: 6px 8px;
-    text-align: left;
-    border-bottom: 1px solid rgba(0, 255, 136, 0.2);
-    font-size: 0.85rem;
-}
-
-th {
-    color: #00d4ff;
-    font-weight: 700;
-    text-transform: uppercase;
-    text-shadow: 0 0 4px #00d4ff;
-}
-
-tbody tr {
-    transition: all 0.2s ease;
-}
-
-tbody tr:hover {
-    background-color: rgba(0, 255, 136, 0.05);
-    transform: translateY(-1px);
-}
-
-/* ------------------------------------------- */
-/* 6. Table Buttons / Actions */
-.table-btn {
-    padding: 4px 8px;
-    font-size: 0.75rem;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.table-btn.edit {
-    background-color: #00d4ff;
-    color: #0d0d0d;
-    box-shadow: 0 0 6px #00d4ff;
-}
-
-.table-btn.edit:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px #00d4ff;
-}
-
-.table-btn.delete {
-    background-color: #ff3366;
-    color: #fff;
-    box-shadow: 0 0 6px #ff3366;
-}
-
-.table-btn.delete:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px #ff3366;
-}
-
-/* ------------------------------------------- */
-/* 7. Compact Responsive Adjustments */
-@media (max-width: 768px) {
-    table {
-        min-width: 500px;
-    }
-
-    th,
-    td {
-        padding: 5px 6px;
-    }
-
-    button {
-        padding: 5px 10px;
-        font-size: 0.8rem;
-    }
-
-    input,
-    textarea {
-        padding: 6px 8px;
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 480px) {
-    table {
-        min-width: 450px;
-    }
-
-    th,
-    td {
-        padding: 4px 5px;
-        font-size: 0.8rem;
-    }
-
-    button {
-        padding: 4px 8px;
-        font-size: 0.75rem;
-    }
-
-    input,
-    textarea {
-        padding: 5px 6px;
-        font-size: 0.8rem;
-    }
+.success-msg {
+    color: var(--color-neon-blue);
+    text-shadow: var(--color-shadow-blue);
+    font-weight: bold;
+    margin-top: 10px;
 }

@@ -1,8 +1,6 @@
-// src/components/Login.jsx
 
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
-// Կարող եք ավելացնել import './Login.css'; եթե ոճավորում է պետք
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -15,7 +13,6 @@ const Login = () => {
         setLoading(true);
         setMessage('');
 
-        // Օգտագործում ենք Supabase-ի signInWithPassword ֆունկցիան
         const { error } = await supabase.auth.signInWithPassword({
             email: email,
             password: password,
@@ -25,11 +22,7 @@ const Login = () => {
             setMessage('Մուտքի սխալ: Ստուգեք Ձեր տվյալները։');
             console.error('Login error:', error.message);
         } else {
-            // Եթե մուտքը հաջող է, Supabase-ը ավտոմատ կպահի սեսիան։
-            // Կոմպոնենտը պետք է վերադարձնի ադմին վահանակին։
             setMessage('Մուտքը հաջողությամբ կատարվեց։');
-            // Կարող եք նաև ուղարկել օգտատիրոջը մեկ այլ էջի, եթե Ձեր App.jsx-ն օգտագործում է routing:
-            // window.location.reload(); // Թարմացնել էջը, որպեսզի AdminDashboard-ը բեռնվի
         }
 
         setLoading(false);

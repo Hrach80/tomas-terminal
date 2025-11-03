@@ -1,28 +1,22 @@
-// src/App.jsx
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient'; // Ներմուծում ենք supabase-ը ֆայլային կառուցվածքից կախված
+import { supabase } from './supabaseClient';
 import AdminDashboard from './components/AdminDashboard';
-import Auth from './components/Auth'; // ՊԱՐՏԱԴԻՐ: Մուտքի ֆորման
-
-// Ոճային ֆայլերը (Ձեր նշած ճանապարհներով)
+import Auth from './components/Auth'; 
 import './assets/styles/global.css';
-import './assets/styles/AdminDashboard.css'; // Եթե այնտեղ չի, կստանաք սխալ
-import './assets/styles/AddProductForm.css'; // Եթե այնտեղ չի, կստանաք սխալ
+import './assets/styles/AdminDashboard.css';
+import './assets/styles/AddProductForm.css'; 
 
 function App() {
-  // session-ը պահում է մուտք գործած օգտատիրոջ մասին ինֆորմացիան
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 1. Ստուգել ընթացիկ session-ը
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setLoading(false);
     });
 
-    // 2. Բաժանորդագրվել session-ի փոփոխություններին (մուտք/դուրս գալու համար)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
@@ -30,11 +24,9 @@ function App() {
       }
     );
 
-    // Մաքրման ֆունկցիա
     return () => subscription.unsubscribe();
   }, []);
 
-  // Ցուցադրել բեռնումը, մինչև կստուգվի սեսիան
   if (loading) {
     return <div style={{ textAlign: 'center', padding: '50px' }}>Բեռնվում է...</div>;
   }
@@ -47,7 +39,6 @@ function App() {
       </header>
 
       <main className="admin-main">
-        {/* Եթե session-ը գոյություն ունի, ցույց տալ AdminDashboard, հակառակ դեպքում՝ Auth ֆորման */}
         {session ? <AdminDashboard /> : <Auth />}
       </main>
 

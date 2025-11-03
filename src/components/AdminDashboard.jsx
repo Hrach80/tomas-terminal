@@ -3,7 +3,7 @@ import { supabase } from '../supabaseClient';
 import Login from './Login';
 import AddProductForm from './AddProductForm';
 import EditProductForm from './EditProductForm';
-import SpecialOffersSettings from './SpecialOffersSettings'; // <=== ՃՇԳՐՏՎԱԾ ԻՄՊՈՐՏ (Ենթադրենք նույն պապկայում է)
+import SpecialOffersSettings from './SpecialOffersSettings'; 
 import '../assets/styles/AddProductForm.css';
 
 
@@ -13,10 +13,6 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(false);
     const [currentView, setCurrentView] = useState('list');
     const [selectedProduct, setSelectedProduct] = useState(null);
-
-    // ... (fetchProducts, useEffect, handleLogout, handleDelete, handleEdit - Անփոփոխ)
-
-    // fetchProducts ֆունկցիան
     const fetchProducts = async () => {
         setLoading(true);
         const { data, error } = await supabase
@@ -74,13 +70,9 @@ const AdminDashboard = () => {
 
     if (!session) return <Login />;
 
-    // ===================================================
-    // 🚩renderView Ֆունկցիան՝ Միավորելով Բոլոր Դիտումները
-    // ===================================================
-
     const renderView = () => {
         switch (currentView) {
-            case 'add': // Օգտագործում ենք 'add' currentView-ի փոխարեն 'add-product'-ի (ինչպես Ձեր կոճակում է)
+            case 'add': 
                 return (
                     <AddProductForm
                         onProductAdded={() => { setCurrentView('list'); fetchProducts(); }}
@@ -95,15 +87,12 @@ const AdminDashboard = () => {
                         onCancel={() => { setCurrentView('list'); setSelectedProduct(null); }}
                     />
                 ) : (
-                    // Եթե խմբագրման ռեժիմ է, բայց ապրանք չկա, վերադառնալ ցուցակին
                     <div className="error-msg">Խմբագրման համար ապրանք չի ընտրվել։</div>
                 );
             case 'offers':
-                // ✅ Ակցիաների կարգավորում՝ առանց ավտոմատ վերադարձի
                 return <SpecialOffersSettings />;
             case 'list':
             default:
-                // Ցուցակը ցուցադրող JSX-ը
                 return (
                     <div className="product-list-area">
                         <h3>Ապրանքներ ({products.length})</h3>
@@ -172,7 +161,6 @@ const AdminDashboard = () => {
         <div className="admin-dashboard">
             <header className="dashboard-header">
                 <div className="dashboard-actions">
-                    {/* Կոճակ 1: Ապրանքների Ցուցակ */}
                     <button
                         type="button"
                         onClick={() => { setCurrentView('list'); setSelectedProduct(null); }}
@@ -180,7 +168,6 @@ const AdminDashboard = () => {
                     >
                         Ապրանքների Ցուցակ
                     </button>
-                    {/* Կոճակ 2: Ավելացնել Ապրանք */}
                     <button
                         type="button"
                         onClick={() => setCurrentView('add')}
@@ -189,7 +176,6 @@ const AdminDashboard = () => {
                         + Ավելացնել Ապրանք
                     </button>
 
-                    {/* Կոճակ 3: ԱԿՑԻԱՆԵՐԻ ԿԱՐԳԱՎՈՐՈՒՄ */}
                     <button
                         type="button"
                         onClick={() => { setCurrentView('offers'); setSelectedProduct(null); }}
@@ -198,7 +184,6 @@ const AdminDashboard = () => {
                         Ակցիաների Կարգավորում 🎁
                     </button>
 
-                    {/* Կոճակ 4: Ելք */}
                     <button
                         type="button"
                         className="logout-btn"
@@ -211,7 +196,6 @@ const AdminDashboard = () => {
             </header>
 
             <main className="dashboard-content">
-                {/* ԲԱՂԱԴՐԻՉԻ ՑՈՒՑԱԴՐՈՒՄԸ renderView-ի ՄԻՋՈՑՈՎ */}
                 {renderView()}
             </main>
         </div>

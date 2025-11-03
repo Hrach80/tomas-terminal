@@ -1,4 +1,3 @@
-// src/components/Auth.jsx
 
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
@@ -8,10 +7,8 @@ const Auth = () => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // [HAYTNEL]: isSignUp վիճակը հեռացված է, քանի որ պահանջվում է միայն Մուտք
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-
     const handleAuth = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -19,7 +16,6 @@ const Auth = () => {
         setMessage('');
 
         try {
-            // ՄՈՒՏՔ (Sign In) Գործողություն
             const { error } = await supabase.auth.signInWithPassword({
                 email,
                 password
@@ -27,11 +23,8 @@ const Auth = () => {
 
             if (error) throw error;
 
-            // Եթե մուտքը հաջող է, AdminDashboard-ը կցուցադրվի ավտոմատ
         } catch (err) {
             console.error(err.message);
-
-            // Փոխում ենք սխալի հաղորդագրությունը ավելի ընկալելիի
             const friendlyError = err.message.includes('Invalid login credentials')
                 ? 'Սխալ էլ. փոստ կամ գաղտնաբառ:'
                 : err.message;
@@ -85,7 +78,6 @@ const Auth = () => {
                 </button>
             </form>
 
-            {/* [HAYTNEL]: Գրանցման փոխարկման բաժինը հեռացված է */}
         </div>
     );
 };
